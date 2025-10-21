@@ -3,15 +3,18 @@ import { Route } from "react-router-dom";
 import { Layout } from "./Layout";
 import { authProvider } from "./auth/authProvider";
 import { Signup } from "./pages/Signup";
+import { VenueList } from "./components/VenueList";
+import { dataProvider } from "./dataProvider";
 
 export const App = () => (
-  <Admin layout={Layout} authProvider={authProvider}>
+  <Admin
+    layout={Layout}
+    authProvider={authProvider}
+    dataProvider={dataProvider}
+  >
     <CustomRoutes noLayout>
       <Route path="/signup" element={<Signup />} />
     </CustomRoutes>
-    <Resource
-      name="venues"
-      list={() => <div>Venue Marketplace</div>}
-    ></Resource>
+    <Resource name="venues" list={VenueList}></Resource>
   </Admin>
 );
