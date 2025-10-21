@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
@@ -30,7 +29,6 @@ export const Signup = () => {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,8 +40,22 @@ export const Signup = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/auth/signup`, formData);
-      navigate("/");
+      const backendData = {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+        city: formData.city || undefined,
+        company: formData.company || undefined,
+        work_position: formData.jobPosition || undefined,
+        linkedin_url: formData.linkedinUrl || undefined,
+      };
+
+      const response = await axios.post(`${API_URL}/auth/signup`, backendData);
+
+      console.log("Signup successful:", response.data);
+
+      window.location.href = "/";
     } catch (error: any) {
       if (error.response?.data?.detail) {
         setError(error.response.data.detail);
@@ -88,7 +100,7 @@ export const Signup = () => {
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <Grid container spacing={2}>
               {/* First Name */}
-              <Grid item xs={12} sm={6}>
+              <Grid>
                 <TextField
                   required
                   fullWidth
@@ -102,7 +114,7 @@ export const Signup = () => {
               </Grid>
 
               {/* Last Name */}
-              <Grid item xs={12} sm={6}>
+              <Grid>
                 <TextField
                   required
                   fullWidth
@@ -116,7 +128,7 @@ export const Signup = () => {
               </Grid>
 
               {/* Email */}
-              <Grid item xs={12}>
+              <Grid>
                 <TextField
                   required
                   fullWidth
@@ -131,7 +143,7 @@ export const Signup = () => {
               </Grid>
 
               {/* Password */}
-              <Grid item xs={12}>
+              <Grid>
                 <TextField
                   required
                   fullWidth
@@ -146,7 +158,7 @@ export const Signup = () => {
               </Grid>
 
               {/* City */}
-              <Grid item xs={12} sm={6}>
+              <Grid>
                 <TextField
                   fullWidth
                   id="city"
@@ -159,7 +171,7 @@ export const Signup = () => {
               </Grid>
 
               {/* Company */}
-              <Grid item xs={12} sm={6}>
+              <Grid>
                 <TextField
                   fullWidth
                   id="company"
@@ -172,7 +184,7 @@ export const Signup = () => {
               </Grid>
 
               {/* Work Position */}
-              <Grid item xs={12}>
+              <Grid>
                 <TextField
                   fullWidth
                   id="jobPosition"
@@ -185,7 +197,7 @@ export const Signup = () => {
               </Grid>
 
               {/* LinkedIn URL */}
-              <Grid item xs={12}>
+              <Grid>
                 <TextField
                   fullWidth
                   id="linkedinUrl"
