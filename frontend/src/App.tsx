@@ -5,6 +5,7 @@ import { authProvider } from "./auth/authProvider";
 import { Signup } from "./pages/Signup";
 import { VenueList } from "./components/VenueList";
 import { dataProvider } from "./dataProvider";
+import { VenueFilter } from "./components/VenueFilter";
 
 export const App = () => (
   <Admin
