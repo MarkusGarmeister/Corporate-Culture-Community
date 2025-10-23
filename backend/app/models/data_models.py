@@ -9,7 +9,7 @@ class RoleEnum(PyEnum):
     ADMIN = "admin"
     USER = "user"
 
- 
+
 class User(SQLModel, table=True):
     __tablename__ = "users"
 
@@ -30,7 +30,9 @@ class LocationLabel(SQLModel, table=True):
     __tablename__ = "location_labels"
 
     location_id: int = Field(
-        sa_column=Column(ForeignKey("locations.id", ondelete="CASCADE"), primary_key=True)
+        sa_column=Column(
+            ForeignKey("locations.id", ondelete="CASCADE"), primary_key=True
+        )
     )
     label_id: int = Field(
         sa_column=Column(ForeignKey("labels.id", ondelete="CASCADE"), primary_key=True)
@@ -54,6 +56,7 @@ class Location(SQLModel, table=True):
     )
     capacity: int
     price_range: int
+    final_rating: Optional[float] = None
 
     # Relationships
     creator: Optional[User] = Relationship(back_populates="locations")
@@ -92,4 +95,3 @@ class Label(SQLModel, table=True):
     locations: List["Location"] = Relationship(
         back_populates="labels", link_model=LocationLabel
     )
-
