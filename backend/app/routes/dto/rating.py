@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 class RatingCreateDto(BaseModel):
     """Payload for creating a Rating."""
-    
+
     location_id: int
     rating: int = Field(..., ge=1, le=5)
     comment: Optional[str] = None
@@ -22,6 +22,7 @@ class RatingUpdateDto(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class RatingReadDto(BaseModel):
     id: int
