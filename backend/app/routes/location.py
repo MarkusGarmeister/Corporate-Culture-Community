@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException, Depends, Query
-from sqlmodel import select
+from fastapi import APIRouter, HTTPException, Depends, Query, Response
+from sqlmodel import select, func
 from sqlmodel.ext.asyncio.session import AsyncSession
 from typing import List, Optional
 from app.models.data_models import Location, User
@@ -49,6 +49,7 @@ async def create_location(
 
 @router.get("/", response_model=List[LocationReadDTO])
 async def read_locations(
+    response: Response,
     skip: int = 0,
     limit: int = 100,
     status: Optional[str] = Query(None),
@@ -68,8 +69,25 @@ async def read_locations(
     if max_price_range:
         query = query.where(Location.price_range <= max_price_range)
 
+    # Get total count
+    count_query = select(func.count()).select_from(Location)
+    if status:
+        count_query = count_query.where(Location.status == status)
+    if city:
+        count_query = count_query.where(Location.city == city)
+    if min_capacity:
+        count_query = count_query.where(Location.capacity >= min_capacity)
+    if max_price_range:
+        count_query = count_query.where(Location.price_range <= max_price_range)
+
+    total = await session.scalar(count_query)
+
     result = await session.exec(query.offset(skip).limit(limit))
     locations = result.all()
+
+    # Set Content-Range header
+    end = min(skip + limit - 1, total - 1) if total > 0 else 0
+    response.headers["Content-Range"] = f"locations {skip}-{end}/{total}"
 
     return locations
 
