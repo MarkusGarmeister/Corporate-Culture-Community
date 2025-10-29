@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-const API_URL = "http://localhost:8000/api/v1";
+const API_URL = "http://localhost:8000/";
 
 export const Signup = () => {
   const [formData, setFormData] = useState({

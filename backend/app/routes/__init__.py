@@ -7,7 +7,7 @@ from fastapi import Depends
 from app.models import User
 
 
-URL = f"postgresql+asyncpg://nehws:fordevelopmentonly@localhost:5432/mydatabase"
+URL = f"postgresql+asyncpg://myuser:mypassword@localhost:5432/mydatabase"
 
 engine = create_async_engine(URL, echo=True, future=True)
 

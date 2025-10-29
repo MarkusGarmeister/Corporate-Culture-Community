@@ -1,7 +1,7 @@
 import { AuthProvider } from "react-admin";
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/v1";
+const API_URL = "http://localhost:8000/";
 
 export const authProvider: AuthProvider = {
   login: async ({ username, password }) => {

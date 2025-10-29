@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes.user import router as user_router
 from app.routes.location import router as location_router
@@ -6,6 +7,15 @@ from app.routes.rating import router as rating_router
 from app.routes.labels import router as labels_router
 
 app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(user_router, prefix="/users", tags=["users"])
 app.include_router(location_router, prefix="/locations", tags=["locations"])

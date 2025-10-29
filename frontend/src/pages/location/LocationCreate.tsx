@@ -3,7 +3,6 @@ import {
   SimpleForm,
   TextInput,
   NumberInput,
-  SelectInput,
   required,
 } from 'react-admin';
 
@@ -11,15 +10,6 @@ export const LocationCreate = () => (
   <Create>
     <SimpleForm>
       <TextInput source="name" validate={[required()]} fullWidth />
-
-      <SelectInput
-        source="status"
-        choices={[
-          { id: 'active', name: 'Active' },
-          { id: 'inactive', name: 'Inactive' },
-        ]}
-        validate={[required()]}
-      />
       <TextInput
         source="address_line_1"
         label="Address Line 1"
