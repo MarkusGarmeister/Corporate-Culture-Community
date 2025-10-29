@@ -13,7 +13,7 @@ import { RatingSection } from '../../components/RatingSection';
 const RatingSectionWrapper = () => {
   const record = useRecordContext()
   return(
-    <RatingSection locationId={record?.id ?? 0} existingRatings={record?.ratings || []}/>
+    <RatingSection locationId={record?.id ?? 0} />
   )
   
 }
