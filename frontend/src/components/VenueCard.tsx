@@ -7,35 +7,38 @@ import {
   Box,
 } from "@mui/material";
 import { Star, People, LocationOn } from "@mui/icons-material";
-import { Venue } from "../types";
+import { Location } from "../types";
 
 interface VenueCardProps {
-  venue: Venue;
-  // TODO onClick() should open the detailed page
+  location: Location;
+  onClick?: () => void;
 }
 
-export const VenueCard = ({ venue, onClick }: VenueCardProps) => {
+export const VenueCard = ({ location, onClick }: VenueCardProps) => {
+  const priceDisplay = "€".repeat(2);
+  const defaultImage = "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600";
+
   return (
-    <Card sx={{ maxWidth: 345, height: "100%" }}>
+    <Card sx={{ maxWidth: 345, height: "100%", cursor: onClick ? "pointer" : "default" }} onClick={onClick}>
       {/* Venue Image */}
       <CardMedia
         component="img"
         height="200"
-        image={venue.image}
-        alt={venue.name}
+        image={defaultImage}
+        alt={location.name}
       />
 
       <CardContent>
         {/* Venue Name */}
         <Typography gutterBottom variant="h6" component="div">
-          {venue.name}
+          {location.name}
         </Typography>
 
         {/* Location */}
         <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
           <LocationOn sx={{ fontSize: 16, mr: 0.5, color: "text.secondary" }} />
           <Typography variant="body2" color="text.secondary">
-            {venue.city}
+            {location.city}, {location.state}
           </Typography>
         </Box>
 
@@ -43,31 +46,32 @@ export const VenueCard = ({ venue, onClick }: VenueCardProps) => {
         <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
           <Star sx={{ fontSize: 16, mr: 0.5, color: "gold" }} />
           <Typography variant="body2" color="text.secondary">
-            {venue.rating} / 5.0
+            {location.final_rating?.toFixed(1) || "N/A"} / 5.0
           </Typography>
         </Box>
 
-        {/* Description */}
+        {/* Address */}
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          {venue.description.length > 100
-            ? `${venue.description.substring(0, 100)}...`
-            : venue.description}
+          {location.address_line_1}
+          {location.address_line_2 && `, ${location.address_line_2}`}
         </Typography>
 
-        {/* Bottom Info: Price and Capacity */}
+        {/* Bottom Info: Price, Capacity, and Status */}
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            mb: 1,
           }}
         >
-          <Chip label={venue.priceRange} color="primary" size="small" />
+          <Chip label={priceDisplay} color="primary" size="small" />
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <People sx={{ fontSize: 16, mr: 0.5 }} />
-            <Typography variant="body2">{venue.capacity} people</Typography>
+            <Typography variant="body2">{location.capacity} people</Typography>
           </Box>
         </Box>
+        <Chip label={location.status} size="small" variant="outlined" />
       </CardContent>
     </Card>
   );
