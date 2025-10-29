@@ -3,9 +3,8 @@ import { Route } from "react-router-dom";
 import { Layout } from "./Layout";
 import { authProvider } from "./auth/authProvider";
 import { Signup } from "./pages/Signup";
-import { VenueList } from "./components/VenueList";
 import { dataProvider } from "./dataProvider";
-import { VenueFilter } from "./components/VenueFilter";
+import { LocationShow, LocationList, LocationCreate } from "./pages/Location";
 
 export const App = () => (
   <Admin
@@ -16,6 +15,11 @@ export const App = () => (
     <CustomRoutes noLayout>
       <Route path="/signup" element={<Signup />} />
     </CustomRoutes>
-    <Resource name="venues" list={VenueList}></Resource>
+    <Resource
+      name="locations"
+      list={LocationList}
+      show={LocationShow}
+      create={LocationCreate}
+    />
   </Admin>
 );
