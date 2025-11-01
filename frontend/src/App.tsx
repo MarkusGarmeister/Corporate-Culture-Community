@@ -1,25 +1,33 @@
-import { Admin, Resource, CustomRoutes } from "react-admin";
+import { ThemeProvider } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Admin, CustomRoutes, Resource } from "react-admin";
 import { Route } from "react-router-dom";
-import { Layout } from "./Layout";
 import { authProvider } from "./auth/authProvider";
-import { Signup } from "./pages/Signup";
 import { dataProvider } from "./dataProvider";
-import { LocationShow, LocationList, LocationCreate } from "./pages/Location";
+import { Layout } from "./Layout";
+import { LandingPage } from "./pages/LandingPage";
+import { LocationCreate, LocationList, LocationShow } from "./pages/Location";
+import { Signup } from "./pages/Signup";
+import { theme } from "./theme";
 
 export const App = () => (
-  <Admin
-    layout={Layout}
-    authProvider={authProvider}
-    dataProvider={dataProvider}
-  >
-    <CustomRoutes noLayout>
-      <Route path="/signup" element={<Signup />} />
-    </CustomRoutes>
-    <Resource
-      name="locations"
-      list={LocationList}
-      show={LocationShow}
-      create={LocationCreate}
-    />
-  </Admin>
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <Admin
+      layout={Layout}
+      authProvider={authProvider}
+      dataProvider={dataProvider}
+    >
+      <CustomRoutes noLayout>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/" element={<LandingPage />}></Route>
+      </CustomRoutes>
+      <Resource
+        name="locations"
+        list={LocationList}
+        show={LocationShow}
+        create={LocationCreate}
+      />
+    </Admin>
+  </ThemeProvider>
 );
