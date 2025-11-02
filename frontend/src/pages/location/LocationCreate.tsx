@@ -4,7 +4,7 @@ import {
   TextInput,
   NumberInput,
   required,
-} from 'react-admin';
+} from "react-admin";
 
 export const LocationCreate = () => (
   <Create>

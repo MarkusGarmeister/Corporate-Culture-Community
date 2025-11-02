@@ -4,950 +4,950 @@
  */
 
 export interface paths {
-    "/users/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List Users */
-        get: operations["list_users_users__get"];
-        put?: never;
-        /** Create User */
-        post: operations["create_user_users__post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/users/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/{user_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Update User */
-        put: operations["update_user_users__user_id__put"];
-        post?: never;
-        /** Delete User */
-        delete: operations["delete_user_users__user_id__delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List Users */
+    get: operations["list_users_users__get"];
+    put?: never;
+    /** Create User */
+    post: operations["create_user_users__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/{user_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/locations/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Read Locations */
-        get: operations["read_locations_locations__get"];
-        put?: never;
-        /** Create Location */
-        post: operations["create_location_locations__post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    /** Update User */
+    put: operations["update_user_users__user_id__put"];
+    post?: never;
+    /** Delete User */
+    delete: operations["delete_user_users__user_id__delete"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/locations/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/locations/{location_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Read Location */
-        get: operations["read_location_locations__location_id__get"];
-        /** Update Location */
-        put: operations["update_location_locations__location_id__put"];
-        post?: never;
-        /** Delete Location */
-        delete: operations["delete_location_locations__location_id__delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Read Locations */
+    get: operations["read_locations_locations__get"];
+    put?: never;
+    /** Create Location */
+    post: operations["create_location_locations__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/locations/{location_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/ratings/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List Ratings */
-        get: operations["list_ratings_ratings__get"];
-        put?: never;
-        /** Create Rating */
-        post: operations["create_rating_ratings__post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Read Location */
+    get: operations["read_location_locations__location_id__get"];
+    /** Update Location */
+    put: operations["update_location_locations__location_id__put"];
+    post?: never;
+    /** Delete Location */
+    delete: operations["delete_location_locations__location_id__delete"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/ratings/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/ratings/{rating_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Update Rating */
-        put: operations["update_rating_ratings__rating_id__put"];
-        post?: never;
-        /** Delete Rating */
-        delete: operations["delete_rating_ratings__rating_id__delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List Ratings */
+    get: operations["list_ratings_ratings__get"];
+    put?: never;
+    /** Create Rating */
+    post: operations["create_rating_ratings__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/ratings/{rating_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/labels/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List Labels */
-        get: operations["list_labels_labels__get"];
-        put?: never;
-        /** Create Label */
-        post: operations["create_label_labels__post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    /** Update Rating */
+    put: operations["update_rating_ratings__rating_id__put"];
+    post?: never;
+    /** Delete Rating */
+    delete: operations["delete_rating_ratings__rating_id__delete"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/labels/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/labels/{label_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Update Label */
-        put: operations["update_label_labels__label_id__put"];
-        post?: never;
-        /** Delete Label */
-        delete: operations["delete_label_labels__label_id__delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List Labels */
+    get: operations["list_labels_labels__get"];
+    put?: never;
+    /** Create Label */
+    post: operations["create_label_labels__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/labels/{label_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    get?: never;
+    /** Update Label */
+    put: operations["update_label_labels__label_id__put"];
+    post?: never;
+    /** Delete Label */
+    delete: operations["delete_label_labels__label_id__delete"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        /** HTTPValidationError */
-        HTTPValidationError: {
-            /** Detail */
-            detail?: components["schemas"]["ValidationError"][];
-        };
-        /** Label */
-        Label: {
-            /** Id */
-            id?: number | null;
-            /** Name */
-            name: string;
-        };
-        /** LabelDto */
-        LabelDto: {
-            /** Name */
-            name: string;
-        };
-        /** Location */
-        Location: {
-            /** Id */
-            id?: number | null;
-            /** Name */
-            name: string;
-            /** Status */
-            status: string;
-            /** Address Line 1 */
-            address_line_1: string;
-            /** Address Line 2 */
-            address_line_2: string;
-            /** City */
-            city: string;
-            /** State */
-            state: string;
-            /** Zip Code */
-            zip_code: string;
-            /** Country */
-            country: string;
-            /** Created By */
-            created_by: number;
-            /** Capacity */
-            capacity: number;
-            /** Price Range */
-            price_range: number;
-            /** Final Rating */
-            final_rating?: number | null;
-        };
-        /**
-         * LocationCreateDTO
-         * @description Payload for creating a Location.
-         */
-        LocationCreateDTO: {
-            /** Name */
-            name: string;
-            /** Status */
-            status: string;
-            /** Address Line 1 */
-            address_line_1: string;
-            /** Address Line 2 */
-            address_line_2: string;
-            /** City */
-            city: string;
-            /** State */
-            state: string;
-            /** Zip Code */
-            zip_code: string;
-            /** Country */
-            country: string;
-            /** Capacity */
-            capacity: number;
-            /** Price Range */
-            price_range: number;
-        };
-        /**
-         * LocationReadDTO
-         * @description Returned representation of a Location.
-         */
-        LocationReadDTO: {
-            /** Id */
-            id: number;
-            /** Name */
-            name: string;
-            /** Status */
-            status: string;
-            /** Address Line 1 */
-            address_line_1: string;
-            /** Address Line 2 */
-            address_line_2: string;
-            /** City */
-            city: string;
-            /** State */
-            state: string;
-            /** Zip Code */
-            zip_code: string;
-            /** Country */
-            country: string;
-            /** Created By */
-            created_by: number;
-            /** Capacity */
-            capacity: number;
-            /** Price Range */
-            price_range: number;
-            /** Final Rating */
-            final_rating?: number | null;
-            /** Labels */
-            labels?: string[];
-        };
-        /**
-         * LocationSingleReadDTO
-         * @description Returned representation of a Location.
-         */
-        LocationSingleReadDTO: {
-            /** Id */
-            id: number;
-            /** Name */
-            name: string;
-            /** Status */
-            status: string;
-            /** Address Line 1 */
-            address_line_1: string;
-            /** Address Line 2 */
-            address_line_2: string;
-            /** City */
-            city: string;
-            /** State */
-            state: string;
-            /** Zip Code */
-            zip_code: string;
-            /** Country */
-            country: string;
-            /** Created By */
-            created_by: number;
-            /** Capacity */
-            capacity: number;
-            /** Price Range */
-            price_range: number;
-            /** Final Rating */
-            final_rating?: number | null;
-            /** Labels */
-            labels?: string[];
-            creator: components["schemas"]["UserReadDTO"];
-            /** Ratings */
-            ratings?: components["schemas"]["Rating"][];
-        };
-        /**
-         * LocationUpdateDTO
-         * @description Payload for updating a Location (all fields optional).
-         */
-        LocationUpdateDTO: {
-            /** Name */
-            name?: string | null;
-            /** Status */
-            status?: string | null;
-            /** Address Line 1 */
-            address_line_1?: string | null;
-            /** Address Line 2 */
-            address_line_2?: string | null;
-            /** City */
-            city?: string | null;
-            /** State */
-            state?: string | null;
-            /** Zip Code */
-            zip_code?: string | null;
-            /** Country */
-            country?: string | null;
-            /** Capacity */
-            capacity?: number | null;
-            /** Price Range */
-            price_range?: number | null;
-        };
-        /** Rating */
-        Rating: {
-            /** Id */
-            id?: number | null;
-            /** Location Id */
-            location_id: number;
-            /** User Id */
-            user_id: number;
-            /** Rating */
-            rating: number;
-            /** Comment */
-            comment?: string | null;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at?: string;
-        };
-        /**
-         * RatingCreateDto
-         * @description Payload for creating a Rating.
-         */
-        RatingCreateDto: {
-            /** Location Id */
-            location_id: number;
-            /** Rating */
-            rating: number;
-            /** Comment */
-            comment?: string | null;
-        };
-        /**
-         * RatingUpdateDto
-         * @description Payload for updating a Rating (all fields optional).
-         */
-        RatingUpdateDto: {
-            /** Rating */
-            rating: number;
-            /** Comment */
-            comment?: string | null;
-        };
-        /** User */
-        User: {
-            /** Id */
-            id?: number | null;
-            /** Name */
-            name: string;
-            /** E Mail */
-            e_mail: string;
-            /** Password */
-            password: string;
-            /** Seed */
-            seed: string;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at?: string;
-            /**
-             * Role
-             * @default user
-             */
-            role: string;
-        };
-        /** UserCreateDTO */
-        UserCreateDTO: {
-            /** Name */
-            name: string;
-            /** E Mail */
-            e_mail: string;
-            /** Password */
-            password: string;
-            /**
-             * Role
-             * @default admin
-             */
-            role: string;
-        };
-        /** UserReadDTO */
-        UserReadDTO: {
-            /** Id */
-            id: number;
-            /** Name */
-            name: string;
-            /** E Mail */
-            e_mail: string;
-            /** Role */
-            role: string;
-        };
-        /** UserUpdateDTO */
-        UserUpdateDTO: {
-            /** Name */
-            name: string;
-            /** Password */
-            password: string;
-        };
-        /** ValidationError */
-        ValidationError: {
-            /** Location */
-            loc: (string | number)[];
-            /** Message */
-            msg: string;
-            /** Error Type */
-            type: string;
-        };
+  schemas: {
+    /** HTTPValidationError */
+    HTTPValidationError: {
+      /** Detail */
+      detail?: components["schemas"]["ValidationError"][];
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    /** Label */
+    Label: {
+      /** Id */
+      id?: number | null;
+      /** Name */
+      name: string;
+    };
+    /** LabelDto */
+    LabelDto: {
+      /** Name */
+      name: string;
+    };
+    /** Location */
+    Location: {
+      /** Id */
+      id?: number | null;
+      /** Name */
+      name: string;
+      /** Status */
+      status: string;
+      /** Address Line 1 */
+      address_line_1: string;
+      /** Address Line 2 */
+      address_line_2: string;
+      /** City */
+      city: string;
+      /** State */
+      state: string;
+      /** Zip Code */
+      zip_code: string;
+      /** Country */
+      country: string;
+      /** Created By */
+      created_by: number;
+      /** Capacity */
+      capacity: number;
+      /** Price Range */
+      price_range: number;
+      /** Final Rating */
+      final_rating?: number | null;
+    };
+    /**
+     * LocationCreateDTO
+     * @description Payload for creating a Location.
+     */
+    LocationCreateDTO: {
+      /** Name */
+      name: string;
+      /** Status */
+      status: string;
+      /** Address Line 1 */
+      address_line_1: string;
+      /** Address Line 2 */
+      address_line_2: string;
+      /** City */
+      city: string;
+      /** State */
+      state: string;
+      /** Zip Code */
+      zip_code: string;
+      /** Country */
+      country: string;
+      /** Capacity */
+      capacity: number;
+      /** Price Range */
+      price_range: number;
+    };
+    /**
+     * LocationReadDTO
+     * @description Returned representation of a Location.
+     */
+    LocationReadDTO: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** Status */
+      status: string;
+      /** Address Line 1 */
+      address_line_1: string;
+      /** Address Line 2 */
+      address_line_2: string;
+      /** City */
+      city: string;
+      /** State */
+      state: string;
+      /** Zip Code */
+      zip_code: string;
+      /** Country */
+      country: string;
+      /** Created By */
+      created_by: number;
+      /** Capacity */
+      capacity: number;
+      /** Price Range */
+      price_range: number;
+      /** Final Rating */
+      final_rating?: number | null;
+      /** Labels */
+      labels?: string[];
+    };
+    /**
+     * LocationSingleReadDTO
+     * @description Returned representation of a Location.
+     */
+    LocationSingleReadDTO: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** Status */
+      status: string;
+      /** Address Line 1 */
+      address_line_1: string;
+      /** Address Line 2 */
+      address_line_2: string;
+      /** City */
+      city: string;
+      /** State */
+      state: string;
+      /** Zip Code */
+      zip_code: string;
+      /** Country */
+      country: string;
+      /** Created By */
+      created_by: number;
+      /** Capacity */
+      capacity: number;
+      /** Price Range */
+      price_range: number;
+      /** Final Rating */
+      final_rating?: number | null;
+      /** Labels */
+      labels?: string[];
+      creator: components["schemas"]["UserReadDTO"];
+      /** Ratings */
+      ratings?: components["schemas"]["Rating"][];
+    };
+    /**
+     * LocationUpdateDTO
+     * @description Payload for updating a Location (all fields optional).
+     */
+    LocationUpdateDTO: {
+      /** Name */
+      name?: string | null;
+      /** Status */
+      status?: string | null;
+      /** Address Line 1 */
+      address_line_1?: string | null;
+      /** Address Line 2 */
+      address_line_2?: string | null;
+      /** City */
+      city?: string | null;
+      /** State */
+      state?: string | null;
+      /** Zip Code */
+      zip_code?: string | null;
+      /** Country */
+      country?: string | null;
+      /** Capacity */
+      capacity?: number | null;
+      /** Price Range */
+      price_range?: number | null;
+    };
+    /** Rating */
+    Rating: {
+      /** Id */
+      id?: number | null;
+      /** Location Id */
+      location_id: number;
+      /** User Id */
+      user_id: number;
+      /** Rating */
+      rating: number;
+      /** Comment */
+      comment?: string | null;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at?: string;
+    };
+    /**
+     * RatingCreateDto
+     * @description Payload for creating a Rating.
+     */
+    RatingCreateDto: {
+      /** Location Id */
+      location_id: number;
+      /** Rating */
+      rating: number;
+      /** Comment */
+      comment?: string | null;
+    };
+    /**
+     * RatingUpdateDto
+     * @description Payload for updating a Rating (all fields optional).
+     */
+    RatingUpdateDto: {
+      /** Rating */
+      rating: number;
+      /** Comment */
+      comment?: string | null;
+    };
+    /** User */
+    User: {
+      /** Id */
+      id?: number | null;
+      /** Name */
+      name: string;
+      /** E Mail */
+      e_mail: string;
+      /** Password */
+      password: string;
+      /** Seed */
+      seed: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at?: string;
+      /**
+       * Role
+       * @default user
+       */
+      role: string;
+    };
+    /** UserCreateDTO */
+    UserCreateDTO: {
+      /** Name */
+      name: string;
+      /** E Mail */
+      e_mail: string;
+      /** Password */
+      password: string;
+      /**
+       * Role
+       * @default admin
+       */
+      role: string;
+    };
+    /** UserReadDTO */
+    UserReadDTO: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** E Mail */
+      e_mail: string;
+      /** Role */
+      role: string;
+    };
+    /** UserUpdateDTO */
+    UserUpdateDTO: {
+      /** Name */
+      name: string;
+      /** Password */
+      password: string;
+    };
+    /** ValidationError */
+    ValidationError: {
+      /** Location */
+      loc: (string | number)[];
+      /** Message */
+      msg: string;
+      /** Error Type */
+      type: string;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    list_users_users__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["User"][];
-                };
-            };
-        };
+  list_users_users__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    create_user_users__post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UserCreateDTO"];
-            };
+        content: {
+          "application/json": components["schemas"]["User"][];
         };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["User"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+      };
     };
-    update_user_users__user_id__put: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                user_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UserUpdateDTO"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["User"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  create_user_users__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    delete_user_users__user_id__delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                user_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserCreateDTO"];
+      };
     };
-    read_locations_locations__get: {
-        parameters: {
-            query?: {
-                skip?: number;
-                limit?: number;
-                status?: string | null;
-                city?: string | null;
-                min_capacity?: number | null;
-                max_price_range?: number | null;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LocationReadDTO"][];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["User"];
         };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
     };
-    create_location_locations__post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LocationCreateDTO"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LocationReadDTO"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  update_user_users__user_id__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        user_id: number;
+      };
+      cookie?: never;
     };
-    read_location_locations__location_id__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                location_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LocationSingleReadDTO"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserUpdateDTO"];
+      };
     };
-    update_location_locations__location_id__put: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                location_id: number;
-            };
-            cookie?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LocationUpdateDTO"];
-            };
+        content: {
+          "application/json": components["schemas"]["User"];
         };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Location"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
         };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
     };
-    delete_location_locations__location_id__delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                location_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  delete_user_users__user_id__delete: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        user_id: number;
+      };
+      cookie?: never;
     };
-    list_ratings_ratings__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Rating"][];
-                };
-            };
+        content?: never;
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
         };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
     };
-    create_rating_ratings__post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RatingCreateDto"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Rating"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  read_locations_locations__get: {
+    parameters: {
+      query?: {
+        skip?: number;
+        limit?: number;
+        status?: string | null;
+        city?: string | null;
+        min_capacity?: number | null;
+        max_price_range?: number | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    update_rating_ratings__rating_id__put: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                rating_id: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RatingUpdateDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["LocationReadDTO"][];
         };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Rating"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
         };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
     };
-    delete_rating_ratings__rating_id__delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                rating_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  create_location_locations__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    list_labels_labels__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Label"][];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LocationCreateDTO"];
+      };
     };
-    create_label_labels__post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LabelDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["LocationReadDTO"];
         };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Label"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
         };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
     };
-    update_label_labels__label_id__put: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                label_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LabelDto"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Label"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  read_location_locations__location_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        location_id: number;
+      };
+      cookie?: never;
     };
-    delete_label_labels__label_id__delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                label_id: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["LocationSingleReadDTO"];
         };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
     };
+  };
+  update_location_locations__location_id__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        location_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LocationUpdateDTO"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Location"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  delete_location_locations__location_id__delete: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        location_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  list_ratings_ratings__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Rating"][];
+        };
+      };
+    };
+  };
+  create_rating_ratings__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RatingCreateDto"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Rating"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  update_rating_ratings__rating_id__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        rating_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RatingUpdateDto"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Rating"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  delete_rating_ratings__rating_id__delete: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        rating_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  list_labels_labels__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Label"][];
+        };
+      };
+    };
+  };
+  create_label_labels__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LabelDto"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Label"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  update_label_labels__label_id__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        label_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LabelDto"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Label"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  delete_label_labels__label_id__delete: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        label_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
 }

@@ -7,20 +7,16 @@ import {
   ArrayField,
   SingleFieldList,
   useRecordContext,
-} from 'react-admin';
-import { RatingSection } from '../../components/RatingSection';
+} from "react-admin";
+import { RatingSection } from "../../components/RatingSection";
 
 const RatingSectionWrapper = () => {
-  const record = useRecordContext()
-  return(
-    <RatingSection locationId={record?.id ?? 0} />
-  )
-  
-}
+  const record = useRecordContext();
+  return <RatingSection locationId={record?.id ?? 0} />;
+};
 
 export const LocationShow = () => {
-  
-  return (  
+  return (
     <Show>
       <SimpleShowLayout>
         <TextField source="id" />
@@ -40,8 +36,8 @@ export const LocationShow = () => {
             <ChipField source="name" />
           </SingleFieldList>
         </ArrayField>
-        <RatingSectionWrapper/>
+        <RatingSectionWrapper />
       </SimpleShowLayout>
     </Show>
-  )
-}
+  );
+};

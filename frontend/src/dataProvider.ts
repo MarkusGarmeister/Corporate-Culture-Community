@@ -1,10 +1,8 @@
-import simpleRestProvider from 'ra-data-simple-rest'
+import simpleRestProvider from "ra-data-simple-rest";
 
 const API_URL = "http://localhost:8000";
 
-export const dataProvider = simpleRestProvider(API_URL)
-
-
+export const dataProvider = simpleRestProvider(API_URL);
 
 // import { DataProvider } from "react-admin";
 // import axios from "axios";

@@ -11,23 +11,21 @@ import { Signup } from "./pages/Signup";
 import { theme } from "./theme";
 
 export const App = () => (
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Admin
-      layout={Layout}
-      authProvider={authProvider}
-      dataProvider={dataProvider}
-    >
-      <CustomRoutes noLayout>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<LandingPage />}></Route>
-      </CustomRoutes>
-      <Resource
-        name="locations"
-        list={LocationList}
-        show={LocationShow}
-        create={LocationCreate}
-      />
-    </Admin>
-  </ThemeProvider>
+  <Admin
+    layout={Layout}
+    authProvider={authProvider}
+    dataProvider={dataProvider}
+    theme={theme}
+  >
+    <CustomRoutes noLayout>
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/" element={<LandingPage />}></Route>
+    </CustomRoutes>
+    <Resource
+      name="locations"
+      list={LocationList}
+      show={LocationShow}
+      create={LocationCreate}
+    />
+  </Admin>
 );

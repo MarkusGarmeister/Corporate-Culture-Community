@@ -1,4 +1,4 @@
-import {components} from "./api"
+import { components } from "./api";
 
 export interface Venue {
   id: number;
@@ -12,6 +12,5 @@ export interface Venue {
   capacity: number;
 }
 
-
-export type Location = components["schemas"]["Location"]
-export type Rating = components["schemas"]["Rating"]
+export type Location = components["schemas"]["Location"];
+export type Rating = components["schemas"]["Rating"];

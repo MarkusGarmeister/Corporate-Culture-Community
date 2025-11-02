@@ -15,7 +15,6 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^5.18.0",
     "@mui/material": "^5.18.0",
-    "@mui/material-pigment-css": "^7.3.3",
     "@mui/styles": "^6.5.0",
     "axios": "^1.12.2",
     "lucide-react": "^0.552.0",

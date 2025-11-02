@@ -1,8 +1,8 @@
-import { List, useListContext } from 'react-admin';
-import { Box } from '@mui/material';
-import { VenueCard } from '../../components/VenueCard';
-import { Location } from '../../types';
-import { useNavigate } from 'react-router-dom';
+import { List, useListContext } from "react-admin";
+import { Box } from "@mui/material";
+import { VenueCard } from "../../components/VenueCard";
+import { Location } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 const LocationGrid = () => {
   const { data, isLoading } = useListContext();
@@ -15,11 +15,11 @@ const LocationGrid = () => {
   return (
     <Box
       sx={{
-        display: 'grid',
+        display: "grid",
         gridTemplateColumns: {
-          xs: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(3, 1fr)',
+          xs: "repeat(1, 1fr)",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(3, 1fr)",
         },
         gap: 2,
         mt: 1,

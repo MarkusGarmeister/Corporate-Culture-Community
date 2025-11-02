@@ -16,10 +16,18 @@ interface VenueCardProps {
 
 export const VenueCard = ({ location, onClick }: VenueCardProps) => {
   const priceDisplay = "€".repeat(2);
-  const defaultImage = "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600";
+  const defaultImage =
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600";
 
   return (
-    <Card sx={{ maxWidth: 345, height: "100%", cursor: onClick ? "pointer" : "default" }} onClick={onClick}>
+    <Card
+      sx={{
+        maxWidth: 345,
+        height: "100%",
+        cursor: onClick ? "pointer" : "default",
+      }}
+      onClick={onClick}
+    >
       {/* Venue Image */}
       <CardMedia
         component="img"
