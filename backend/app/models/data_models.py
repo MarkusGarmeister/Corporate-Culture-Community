@@ -8,18 +8,24 @@ from enum import Enum as PyEnum
 class RoleEnum(PyEnum):
     ADMIN = "admin"
     USER = "user"
+    PENDING = "pending"
 
 
 class User(SQLModel, table=True):
     __tablename__ = "users"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
-    e_mail: str = Field(unique=True)
+    first_name: str
+    last_name: str
+    email: str = Field(unique=True)
     password: str
+    city: Optional[str]
+    company: Optional[str]
+    work_position: Optional[str]
+    linkedin_url: Optional[str]
     seed: str
     created_at: datetime = Field(default_factory=datetime.now)
-    role: str = Field(default=RoleEnum.USER.value)
+    role: str = Field(default=RoleEnum.PENDING.value)
 
     # Relationships
     locations: List["Location"] = Relationship(back_populates="creator")

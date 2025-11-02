@@ -21,18 +21,22 @@ async def create_user(
     hashed_password = hash_value(user.password + seed)
     try:
         db_user = User(
-            e_mail=user.e_mail,
-            name=user.name,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            email=user.email,
             password=hashed_password,
             seed=seed,
-            role=user.role,
+            city=user.city,
+            company=user.company,
+            work_position=user.work_position,
+            linkedin_url=user.linkedin_url,
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     try:
         session.add(db_user)
         await session.commit()
-        await session.refresh(user)
+        await session.refresh(db_user)
         return db_user
     except Exception as e:
         await session.rollback()
