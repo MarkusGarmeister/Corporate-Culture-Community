@@ -1,21 +1,27 @@
 import { useState } from "react";
 import axios from "axios";
 import {
-  Box,
-  Button,
-  Container,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   TextField,
+  Button,
   Typography,
   Alert,
-  Paper,
+  Box,
   Grid,
-  Link,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
 
 const API_URL = "http://localhost:8000/";
 
-export const Signup = () => {
+interface SignupPopup {
+  open: boolean;
+  onClose: () => void;
+  onSignup: () => void;
+}
+
+export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -51,12 +57,12 @@ export const Signup = () => {
         linkedin_url: formData.linkedinUrl || undefined,
       };
 
-      const response = await axios.post(`${API_URL}/auth/signup`, backendData);
-
+      const response = await axios.post(`${API_URL}users/`, backendData);
       console.log("Signup successful:", response.data);
 
-      window.location.href = "/";
-    } catch (error: any) {
+      onSignup();
+      onClose();
+    } catch (error) {
       if (error.response?.data?.detail) {
         setError(error.response.data.detail);
       } else {
@@ -68,172 +74,149 @@ export const Signup = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Paper elevation={3} sx={{ padding: 4, width: "100%" }}>
-          <Typography component="h1" variant="h4" align="center" gutterBottom>
-            Sign Up
-          </Typography>
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle sx={{ fontWeight: 600 }}>Join Our Community</DialogTitle>
 
-          <Typography
-            variant="body2"
-            align="center"
-            color="text.secondary"
-            sx={{ mb: 3 }}
-          >
-            Join our Corporate Culture Community
-          </Typography>
+      <DialogContent>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+          Create your account to access the venue marketplace
+        </Typography>
 
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
 
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <Grid container spacing={2}>
-              {/* First Name */}
-              <Grid>
-                <TextField
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  autoComplete="given-name"
-                />
-              </Grid>
-
-              {/* Last Name */}
-              <Grid>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  autoComplete="family-name"
-                />
-              </Grid>
-
-              {/* Email */}
-              <Grid>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  autoComplete="email"
-                />
-              </Grid>
-
-              {/* Password */}
-              <Grid>
-                <TextField
-                  required
-                  fullWidth
-                  id="password"
-                  label="Password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  autoComplete="new-password"
-                />
-              </Grid>
-
-              {/* City */}
-              <Grid>
-                <TextField
-                  fullWidth
-                  id="city"
-                  label="City"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  autoComplete="address-level2"
-                />
-              </Grid>
-
-              {/* Company */}
-              <Grid>
-                <TextField
-                  fullWidth
-                  id="company"
-                  label="Company"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
-                  autoComplete="organization"
-                />
-              </Grid>
-
-              {/* Work Position */}
-              <Grid>
-                <TextField
-                  fullWidth
-                  id="jobPosition"
-                  label="Work Position"
-                  name="jobPosition"
-                  value={formData.jobPosition}
-                  onChange={handleChange}
-                  autoComplete="organization-title"
-                />
-              </Grid>
-
-              {/* LinkedIn URL */}
-              <Grid>
-                <TextField
-                  fullWidth
-                  id="linkedinUrl"
-                  label="LinkedIn URL"
-                  name="linkedinUrl"
-                  type="url"
-                  value={formData.linkedinUrl}
-                  onChange={handleChange}
-                  placeholder="https://www.linkedin.com/in/yourprofile"
-                />
-              </Grid>
+        <Box component="form" onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            {/* First Name */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                autoComplete="given-name"
+              />
             </Grid>
 
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              disabled={loading}
-            >
-              {loading ? "Signing up..." : "Sign Up"}
-            </Button>
+            {/* Last Name */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                autoComplete="family-name"
+              />
+            </Grid>
 
-            {/* Link to Login */}
-            <Box sx={{ textAlign: "center" }}>
-              <Typography variant="body2">
-                Already have an account?{" "}
-                <Link component={RouterLink} to="/" underline="hover">
-                  Sign in
-                </Link>
-              </Typography>
-            </Box>
-          </Box>
-        </Paper>
-      </Box>
-    </Container>
+            {/* Email */}
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                autoComplete="email"
+              />
+            </Grid>
+
+            {/* Password */}
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="password"
+                label="Password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                autoComplete="new-password"
+              />
+            </Grid>
+
+            {/* City */}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                id="city"
+                label="City"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                autoComplete="address-level2"
+              />
+            </Grid>
+
+            {/* Company */}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                id="company"
+                label="Company"
+                name="company"
+                value={formData.company}
+                onChange={handleChange}
+                autoComplete="organization"
+              />
+            </Grid>
+
+            {/* Work Position */}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                id="jobPosition"
+                label="Work Position"
+                name="jobPosition"
+                value={formData.jobPosition}
+                onChange={handleChange}
+                autoComplete="organization-title"
+              />
+            </Grid>
+
+            {/* LinkedIn URL */}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                id="linkedinUrl"
+                label="LinkedIn URL"
+                name="linkedinUrl"
+                type="url"
+                value={formData.linkedinUrl}
+                onChange={handleChange}
+                placeholder="https://www.linkedin.com/in/yourprofile"
+              />
+            </Grid>
+          </Grid>
+        </Box>
+      </DialogContent>
+
+      <DialogActions sx={{ px: 3, pb: 2, flexDirection: "column", gap: 1 }}>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          fullWidth
+          disabled={loading}
+        >
+          {loading ? "Signing up..." : "Sign Up"}
+        </Button>
+        <Button onClick={onClose} variant="outlined" fullWidth>
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

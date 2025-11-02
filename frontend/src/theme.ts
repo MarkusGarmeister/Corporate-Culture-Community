@@ -148,5 +148,6 @@ export const colors = {
   border: "#E5E5E5",
   accent: "#FFC107", // Gold for ratings
   icon: "#1A1A1A",
+  iconBg: "#F5F5F5", // Light gray background for icon containers
   ctaText: "#FFFFFF",
 };
