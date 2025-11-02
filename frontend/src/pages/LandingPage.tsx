@@ -3,27 +3,20 @@ import {
   Box,
   Button,
   Container,
-  Dialog,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Building2 } from "lucide-react";
+import { Building2, Users, MapPin, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { colors } from "../theme";
 import { useState } from "react";
 import { Login } from "../components/Login";
-
+import { Signup } from "./Signup";
+import { Footer } from "../components/Footer";
 export const LandingPage = () => {
-  const [open, setOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [signupOpen, setSignupOpen] = useState(false);
   const navigate = useNavigate();
-
-  const handleLogin = () => {
-    navigate("/#/login");
-  };
-
-  const handleSignup = () => {
-    navigate("/signup");
-  };
 
   return (
     <Box>
@@ -71,23 +64,36 @@ export const LandingPage = () => {
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-              <Button variant="text" onClick={() => setOpen(true)}>
+              <Button variant="text" onClick={() => setLoginOpen(true)}>
                 Login
               </Button>
               <Login
-                open={open}
-                onClose={() => setOpen(false)}
-                onLogin={() => console.log("logged in")}
+                open={loginOpen}
+                onClose={() => setLoginOpen(false)}
+                onLogin={(email, password) => {
+                  localStorage.setItem("auth-token", "mock-token-420");
+                  localStorage.setItem("email", email);
+                  console.log("logged in");
+                  setLoginOpen(false);
+                  navigate("/locations");
+                }}
               />
-              <Button variant="contained" onClick={handleSignup}>
+              <Button variant="contained" onClick={() => setSignupOpen(true)}>
                 Apply Now
               </Button>
+              <Signup
+                open={signupOpen}
+                onClose={() => setSignupOpen(false)}
+                onSignup={() => {
+                  setSignupOpen(false);
+                  navigate("/signup/success");
+                }}
+              />
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
 
-      {/* Hero Section */}
       <Container maxWidth="lg" sx={{ mt: 8, mb: 8, textAlign: "center" }}>
         <Typography variant="h1" sx={{ mb: 3 }}>
           Discover Your Next Business Venue
@@ -106,10 +112,18 @@ export const LandingPage = () => {
           like-minded individuals and elevate your corporate experience.
         </Typography>
         <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-          <Button variant="contained" size="large" onClick={handleSignup}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => setSignupOpen(true)}
+          >
             Join the Community
           </Button>
-          <Button variant="outlined" size="large" onClick={handleLogin}>
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={() => setLoginOpen(true)}
+          >
             Member Login
           </Button>
         </Box>
@@ -128,6 +142,21 @@ export const LandingPage = () => {
           }}
         >
           <Box sx={{ textAlign: "center" }}>
+            <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: "50%",
+                  backgroundColor: colors.iconBg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <MapPin style={{ width: 32, height: 32, color: colors.icon }} />
+              </Box>
+            </Box>
             <Typography variant="h5" sx={{ mb: 2 }}>
               Curated Venues
             </Typography>
@@ -137,6 +166,21 @@ export const LandingPage = () => {
             </Typography>
           </Box>
           <Box sx={{ textAlign: "center" }}>
+            <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: "50%",
+                  backgroundColor: colors.iconBg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Users style={{ width: 32, height: 32, color: colors.icon }} />
+              </Box>
+            </Box>
             <Typography variant="h5" sx={{ mb: 2 }}>
               Community Reviews
             </Typography>
@@ -146,6 +190,21 @@ export const LandingPage = () => {
             </Typography>
           </Box>
           <Box sx={{ textAlign: "center" }}>
+            <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: "50%",
+                  backgroundColor: colors.iconBg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Star style={{ width: 32, height: 32, color: colors.icon }} />
+              </Box>
+            </Box>
             <Typography variant="h5" sx={{ mb: 2 }}>
               Share & Contribute
             </Typography>
@@ -156,6 +215,7 @@ export const LandingPage = () => {
           </Box>
         </Box>
       </Container>
+      <Footer />
     </Box>
   );
 };

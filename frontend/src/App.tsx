@@ -7,8 +7,8 @@ import { dataProvider } from "./dataProvider";
 import { Layout } from "./Layout";
 import { LandingPage } from "./pages/LandingPage";
 import { LocationCreate, LocationList, LocationShow } from "./pages/Location";
-import { Signup } from "./pages/Signup";
 import { theme } from "./theme";
+import { SignupCompleted } from "./pages/SignupCompleted";
 
 export const App = () => (
   <Admin
@@ -18,8 +18,8 @@ export const App = () => (
     theme={theme}
   >
     <CustomRoutes noLayout>
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/" element={<LandingPage />}></Route>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/signup/success" element={<SignupCompleted />} />
     </CustomRoutes>
     <Resource
       name="locations"
