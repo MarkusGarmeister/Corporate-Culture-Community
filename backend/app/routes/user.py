@@ -4,9 +4,11 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models import User
 from app.routes.dto.user import UserCreateDTO, UserUpdateDTO, Token, LoginDTO
-from app.utils import hash_value, generate_random_string
-from app.auth import authenticate_user, create_access_token
+
+from app.auth import authenticate_user, create_access_token, get_password_hash
 from app.routes import SessionDep
+from datetime import timedelta
+from app.auth import ACCESS_TOKEN_EXPIRE_MINUTES
 
 from .__init__ import get_session
 
@@ -17,15 +19,14 @@ router = APIRouter()
 async def create_user(
     user: UserCreateDTO, session: AsyncSession = Depends(get_session)
 ):
-    seed = generate_random_string()
-    hashed_password = hash_value(user.password + seed)
+
+    hashed_password = get_password_hash(user.password)
     try:
         db_user = User(
             first_name=user.first_name,
             last_name=user.last_name,
             email=user.email,
             password=hashed_password,
-            seed=seed,
             city=user.city,
             company=user.company,
             work_position=user.work_position,
@@ -58,9 +59,7 @@ async def update_user(
     db_user = await session.get(User, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
-
-    seed = generate_random_string()
-    hashed_password = hash_value(updated_user.password + seed)
+    hashed_password = get_password_hash(updated_user.password)
 
     db_user.name = updated_user.name
     db_user.password = hashed_password
@@ -90,5 +89,7 @@ async def get_access_token(login_data: LoginDTO, session: SessionDep) -> Token:
     if not user:
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     user_data = {"sub": user.email, "id": user.id}
-    token = create_access_token(user_data)
+    token = create_access_token(
+        user_data, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
     return Token(access_token=token, token_type="bearer")
