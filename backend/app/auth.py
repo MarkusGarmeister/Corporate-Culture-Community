@@ -14,7 +14,7 @@ ALGORITHM = os.getenv("JWT_ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
 
-password_hash = PasswordHash.recommended()
+password_hasher = PasswordHash.recommended()
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="users/login")
 
 
