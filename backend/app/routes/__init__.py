@@ -3,13 +3,13 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import create_async_engine
 from typing import Annotated
 from fastapi import Depends
-
+from app.config import Config
 from app.models import User
 
+config = Config()
 
-URL = f"postgresql+asyncpg://myuser:mypassword@localhost:5432/mydatabase"
 
-engine = create_async_engine(URL, echo=True, future=True)
+engine = create_async_engine(config.DATABASE_URL, echo=True, future=True)
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
@@ -21,6 +21,9 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
             raise e
         finally:
             await session.close()
+
+
+SessionDep = Annotated[AsyncSession, Depends(get_session)]
 
 
 # Fake async current_user dependency
