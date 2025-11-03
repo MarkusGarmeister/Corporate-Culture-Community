@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from datetime import timezone, datetime, timedelta
-import jwt
+from jose import jwt
 from pwdlib import PasswordHash
 from fastapi.security import OAuth2PasswordBearer
 from app.routes import SessionDep
@@ -38,7 +38,8 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 
 async def authenticate_user(email: str, password: str, session: SessionDep):
-    user = await session.exec(select(User).filter(User.email == email)).first()
+    result = await session.exec(select(User).filter(User.email == email))
+    user = result.first()
     if not user:
         return False
     user_hashed_password = user.password
