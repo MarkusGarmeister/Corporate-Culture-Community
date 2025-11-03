@@ -9,6 +9,7 @@ import { LandingPage } from "./pages/LandingPage";
 import { LocationCreate, LocationList, LocationShow } from "./pages/Location";
 import { theme } from "./theme";
 import { SignupCompleted } from "./pages/SignupCompleted";
+import { NotFound } from "./pages/404NotFound";
 
 export const App = () => (
   <Admin
@@ -20,6 +21,7 @@ export const App = () => (
     <CustomRoutes noLayout>
       <Route path="/" element={<LandingPage />} />
       <Route path="/signup/success" element={<SignupCompleted />} />
+      <Route path="*" element={<NotFound />} />
     </CustomRoutes>
     <Resource
       name="locations"
