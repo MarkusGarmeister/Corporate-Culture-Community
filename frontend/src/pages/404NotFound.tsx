@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Button, Paper } from "@mui/material";
-import { Building2, AlertCircle, Home, ArrowLeft } from "lucide-react";
+import { Building2, AlertCircle, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { colors } from "../theme";
 import { Footer } from "../components/Footer";
