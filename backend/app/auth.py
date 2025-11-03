@@ -7,7 +7,6 @@ from fastapi.security import OAuth2PasswordBearer
 from app.routes import SessionDep
 from app.models import User
 from sqlmodel import select
-from app.utils import hash_value
 
 load_dotenv()
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
@@ -39,12 +38,10 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 
 async def authenticate_user(email: str, password: str, session: SessionDep):
-    user = (session.exec(select(User).filter(User.email == email))).first()
+    user = await session.exec(select(User).filter(User.email == email)).first()
     if not user:
         return False
-    user_seed = user.seed
     user_hashed_password = user.password
-    hashed_password = hash_value(password + user_seed)
-    if hashed_password != user_hashed_password:
+    if not verify_password(password, user.password):
         return False
     return user
