@@ -23,7 +23,6 @@ class User(SQLModel, table=True):
     company: Optional[str]
     work_position: Optional[str]
     linkedin_url: Optional[str]
-    seed: str
     created_at: datetime = Field(default_factory=datetime.now)
     role: str = Field(default=RoleEnum.PENDING.value)
 
