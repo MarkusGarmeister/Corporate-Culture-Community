@@ -3,11 +3,14 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import create_async_engine
 from typing import Annotated
 from fastapi import Depends
+import os
+from dotenv import load_dotenv
 
 from app.models import User
 
+load_dotenv()
 
-URL = f"postgresql+asyncpg://myuser:mypassword@localhost:5432/mydatabase"
+URL = os.getenv("DATABASE_URL")
 
 engine = create_async_engine(URL, echo=True, future=True)
 
