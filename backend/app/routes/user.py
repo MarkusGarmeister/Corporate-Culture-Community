@@ -8,10 +8,10 @@ from app.routes.dto.user import UserCreateDTO, UserUpdateDTO, Token, LoginDTO
 from app.auth import authenticate_user, create_access_token, get_password_hash
 from app.routes import SessionDep
 from datetime import timedelta
-from app.auth import ACCESS_TOKEN_EXPIRE_MINUTES
-
+from app.config import Config
 from .__init__ import get_session
 
+config = Config()
 router = APIRouter()
 
 
@@ -90,6 +90,6 @@ async def get_access_token(login_data: LoginDTO, session: SessionDep) -> Token:
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     user_data = {"sub": user.email, "id": user.id}
     token = create_access_token(
-        user_data, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        user_data, expires_delta=timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
     return Token(access_token=token, token_type="bearer")

@@ -3,16 +3,13 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import create_async_engine
 from typing import Annotated
 from fastapi import Depends
-import os
-from dotenv import load_dotenv
-
+from app.config import Config
 from app.models import User
 
-load_dotenv()
+config = Config()
 
-URL = os.getenv("DATABASE_URL")
 
-engine = create_async_engine(URL, echo=True, future=True)
+engine = create_async_engine(config.DATABASE_URL, echo=True, future=True)
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
