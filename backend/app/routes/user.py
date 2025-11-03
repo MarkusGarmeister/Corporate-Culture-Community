@@ -3,10 +3,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models import User
-from app.routes.dto import UserUpdateDTO
-from app.routes.dto.user import UserCreateDTO
+from app.routes.dto.user import UserCreateDTO, UserUpdateDTO, Token, LoginDTO
 from app.utils import hash_value, generate_random_string
-
+from app.auth import authenticate_user, create_access_token
+from app.routes import SessionDep
 
 from .__init__ import get_session
 
@@ -82,3 +82,13 @@ async def delete_user(user_id: int, session: AsyncSession = Depends(get_session)
         raise HTTPException(status_code=404, detail="User not found")
     await session.delete(user)
     await session.commit()
+
+
+@router.post("/login")
+async def get_access_token(login_data: LoginDTO, session: SessionDep) -> Token:
+    user = await authenticate_user(login_data.email, login_data.password, session)
+    if not user:
+        raise HTTPException(status_code=401, detail="Incorrect email or password")
+    user_data = {"sub": user.email, "id": user.id}
+    token = create_access_token(user_data)
+    return Token(access_token=token, token_type="bearer")
