@@ -1,5 +1,3 @@
-import { ThemeProvider } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
 import { Admin, CustomRoutes, Resource } from "react-admin";
 import { Route } from "react-router-dom";
 import { authProvider } from "./auth/authProvider";
@@ -17,17 +15,17 @@ export const App = () => (
     authProvider={authProvider}
     dataProvider={dataProvider}
     theme={theme}
+    catchAll={NotFound}
   >
-    <CustomRoutes noLayout>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/signup/success" element={<SignupCompleted />} />
-      <Route path="*" element={<NotFound />} />
-    </CustomRoutes>
     <Resource
       name="locations"
       list={LocationList}
       show={LocationShow}
       create={LocationCreate}
     />
+    <CustomRoutes noLayout>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/signup/success" element={<SignupCompleted />} />
+    </CustomRoutes>
   </Admin>
 );
