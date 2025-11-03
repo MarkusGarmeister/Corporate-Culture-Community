@@ -70,10 +70,7 @@ export const LandingPage = () => {
               <Login
                 open={loginOpen}
                 onClose={() => setLoginOpen(false)}
-                onLogin={(email, password) => {
-                  localStorage.setItem("auth-token", "mock-token-420");
-                  localStorage.setItem("email", email);
-                  console.log("logged in");
+                onLogin={() => {
                   setLoginOpen(false);
                   navigate("/locations");
                 }}

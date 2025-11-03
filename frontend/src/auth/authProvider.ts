@@ -6,7 +6,7 @@ const API_URL = "http://localhost:8000/";
 export const authProvider: AuthProvider = {
   login: async ({ username, password }) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
+      const response = await axios.post(`${API_URL}users/login`, {
         email: username,
         password,
       });

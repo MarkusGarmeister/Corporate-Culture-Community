@@ -7,22 +7,36 @@ import {
   Button,
   Typography,
   Box,
+  Alert,
 } from "@mui/material";
 import { useState } from "react";
+import { useLogin } from "react-admin";
 
 interface LoginPopup {
   open: boolean;
   onClose: () => void;
-  onLogin: (email: string, password: string) => void;
+  onLogin: () => void;
 }
 
 export const Login = ({ open, onClose, onLogin }: LoginPopup) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const login = useLogin();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(email, password);
+    setError("");
+    setLoading(true);
+    try {
+      await login({ username: email, password });
+      onLogin();
+    } catch (error) {
+      setError("Invalid email or password");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
