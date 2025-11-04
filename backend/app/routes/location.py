@@ -11,8 +11,8 @@ from app.routes.dto.location import (
 )
 from sqlalchemy.orm import selectinload
 
-
-from .__init__ import get_session, get_current_user
+from app.auth import get_current_user
+from .__init__ import get_session
 
 router = APIRouter()
 

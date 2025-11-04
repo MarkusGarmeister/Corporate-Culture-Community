@@ -24,8 +24,3 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
 
 
 SessionDep = Annotated[AsyncSession, Depends(get_session)]
-
-
-# Fake async current_user dependency
-async def get_current_user() -> User:
-    return User(id=2, name="test", e_mail="a@b.com", password="", seed="", role="user")
