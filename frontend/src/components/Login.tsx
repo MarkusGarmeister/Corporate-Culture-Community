@@ -47,7 +47,11 @@ export const Login = ({ open, onClose, onLogin }: LoginPopup) => {
         <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
           Log in to access the venue marketplace and connect with the community.
         </Typography>
-
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -81,8 +85,13 @@ export const Login = ({ open, onClose, onLogin }: LoginPopup) => {
         <Button onClick={onClose} variant="outlined" fullWidth>
           Cancel
         </Button>
-        <Button onClick={handleSubmit} variant="contained" fullWidth>
-          Login
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          fullWidth
+          disabled={loading}
+        >
+          {loading ? "Logging in..." : "Login"}
         </Button>
       </DialogActions>
     </Dialog>

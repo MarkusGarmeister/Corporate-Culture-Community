@@ -16,6 +16,7 @@ export const App = () => (
     dataProvider={dataProvider}
     theme={theme}
     catchAll={NotFound}
+    loginPage={false}
   >
     <Resource
       name="locations"
@@ -26,6 +27,7 @@ export const App = () => (
     <CustomRoutes noLayout>
       <Route path="/" element={<LandingPage />} />
       <Route path="/signup/success" element={<SignupCompleted />} />
+      <Route path="/login" element={<LandingPage />} />
     </CustomRoutes>
   </Admin>
 );

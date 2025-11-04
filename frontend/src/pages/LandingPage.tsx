@@ -7,14 +7,15 @@ import {
   Typography,
 } from "@mui/material";
 import { Building2, Users, MapPin, Star } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { colors } from "../theme";
 import { useState } from "react";
 import { Login } from "../components/Login";
 import { Signup } from "./Signup";
 import { Footer } from "../components/Footer";
 export const LandingPage = () => {
-  const [loginOpen, setLoginOpen] = useState(false);
+  const location = useLocation();
+  const [loginOpen, setLoginOpen] = useState(location.pathname === "/login");
   const [signupOpen, setSignupOpen] = useState(false);
   const navigate = useNavigate();
 
