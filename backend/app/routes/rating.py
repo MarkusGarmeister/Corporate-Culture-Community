@@ -6,8 +6,8 @@ from app.models import Rating
 from app.models.data_models import Location, User
 from app.routes.dto import RatingCreateDto, RatingUpdateDto
 from sqlalchemy.orm import selectinload
-
-from .__init__ import get_session, get_current_user
+from app.auth import get_current_user
+from .__init__ import get_session
 
 router = APIRouter()
 
