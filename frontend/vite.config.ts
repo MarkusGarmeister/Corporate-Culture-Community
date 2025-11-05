@@ -11,4 +11,9 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode === "development",
   },
   base: "./",
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/test/setup.ts",
+  },
 }));
