@@ -4,7 +4,7 @@ import { colors } from "../theme";
 import { useNavigate, useLocation } from "react-router";
 import { useGetIdentity, useGetOne } from "react-admin";
 
-export const Header = () => {
+export const Header = ({ backButton }: { backButton?: React.ReactNode }) => {
   const { data: userId } = useGetIdentity();
   const { data: user } = useGetOne("users", { id: userId?.id });
   const location = useLocation();
@@ -22,25 +22,28 @@ export const Header = () => {
         justifyContent: "space-between",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Building2
-          style={{
-            height: "32px",
-            width: "32px",
-            color: colors.icon,
-          }}
-        />
-        <Typography
-          variant="h6"
-          component="span"
-          sx={{
-            fontSize: "1.25rem",
-            fontWeight: 400,
-            color: colors.text,
-          }}
-        >
-          Corporate Culture Community
-        </Typography>
+      <Box sx={{ display: "flex", alignItems: "column", gap: 1 }}>
+        {backButton}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Building2
+            style={{
+              height: "32px",
+              width: "32px",
+              color: colors.icon,
+            }}
+          />
+          <Typography
+            variant="h6"
+            component="span"
+            sx={{
+              fontSize: "1.25rem",
+              fontWeight: 400,
+              color: colors.text,
+            }}
+          >
+            Corporate Culture Community
+          </Typography>
+        </Box>
       </Box>
 
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
