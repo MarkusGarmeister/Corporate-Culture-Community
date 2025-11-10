@@ -22,7 +22,7 @@ export const VenueCard = ({ location, onClick }: VenueCardProps) => {
   return (
     <Card
       sx={{
-        maxWidth: 345,
+        width: "100%",
         height: "100%",
         cursor: onClick ? "pointer" : "default",
       }}
