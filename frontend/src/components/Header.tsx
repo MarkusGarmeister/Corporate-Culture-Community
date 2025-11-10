@@ -2,8 +2,11 @@ import { Toolbar, Box, Typography, Button } from "@mui/material";
 import { Building2, LogOut, User } from "lucide-react";
 import { colors } from "../theme";
 import { useNavigate } from "react-router";
+import { useGetIdentity, useGetOne } from "react-admin";
 
 export const Header = () => {
+  const { data: userId } = useGetIdentity();
+  const { data: user } = useGetOne("users", { id: userId?.id });
   const navigate = useNavigate();
   return (
     <Toolbar
@@ -38,13 +41,13 @@ export const Header = () => {
 
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
         <Typography variant="body1" sx={{ color: "text.secondary" }}>
-          Welcome, Max Mustermann
+          Welcome, {user?.first_name} {user?.last_name}
         </Typography>
         <Button
           variant="outlined"
           size="small"
           startIcon={<User size={20} />}
-          onClick={() => navigate("/users/1/show")}
+          onClick={() => navigate(`/users/${userId?.id}/show`)}
         >
           Profile
         </Button>
