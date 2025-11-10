@@ -1,13 +1,17 @@
 import { Toolbar, Box, Typography, Button } from "@mui/material";
 import { Building2, LogOut, User } from "lucide-react";
 import { colors } from "../theme";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useGetIdentity, useGetOne } from "react-admin";
 
 export const Header = () => {
   const { data: userId } = useGetIdentity();
   const { data: user } = useGetOne("users", { id: userId?.id });
+  const location = useLocation();
   const navigate = useNavigate();
+  const onProfilePage =
+    location.pathname.includes("/users/") &&
+    location.pathname.includes("/show");
   return (
     <Toolbar
       disableGutters
@@ -43,14 +47,16 @@ export const Header = () => {
         <Typography variant="body1" sx={{ color: "text.secondary" }}>
           Welcome, {user?.first_name} {user?.last_name}
         </Typography>
-        <Button
-          variant="outlined"
-          size="small"
-          startIcon={<User size={20} />}
-          onClick={() => navigate(`/users/${userId?.id}/show`)}
-        >
-          Profile
-        </Button>
+        {!onProfilePage && (
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<User size={20} />}
+            onClick={() => navigate(`/users/${userId?.id}/show`)}
+          >
+            Profile
+          </Button>
+        )}
 
         <Button
           variant="outlined"
