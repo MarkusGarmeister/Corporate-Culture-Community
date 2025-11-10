@@ -13,7 +13,7 @@ import { Location } from "../types";
 import { colors } from "../theme";
 import { ShareExperienceDialog } from "./ShareExperience";
 import { Header } from "./Header";
-import { BackToMarket } from "./backToMarket";
+import { BackToMarket } from "./BackToMarket";
 
 export const VenueDetailCard = () => {
   const record = useRecordContext<Location>();

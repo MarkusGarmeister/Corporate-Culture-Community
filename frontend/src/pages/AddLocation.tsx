@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { colors } from "../theme";
 import { useState } from "react";
 import { Header } from "../components/Header";
-import { BackToMarket } from "../components/backToMarket";
+import { BackToMarket } from "../components/BackToMarket";
 
 export const AddLocation = () => {
   const [formData, setFormData] = useState({
