@@ -29,12 +29,30 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
+    /** Get User */
+    get: operations["get_user_users__user_id__get"];
     /** Update User */
     put: operations["update_user_users__user_id__put"];
     post?: never;
     /** Delete User */
     delete: operations["delete_user_users__user_id__delete"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Get Access Token */
+    post: operations["get_access_token_users_login_post"];
+    delete?: never;
     options?: never;
     head?: never;
     patch?: never;
@@ -322,6 +340,13 @@ export interface components {
       /** Price Range */
       price_range?: number | null;
     };
+    /** LoginDTO */
+    LoginDTO: {
+      /** Email */
+      email: string;
+      /** Password */
+      password: string;
+    };
     /** Rating */
     Rating: {
       /** Id */
@@ -362,18 +387,33 @@ export interface components {
       /** Comment */
       comment?: string | null;
     };
+    /** Token */
+    Token: {
+      /** Access Token */
+      access_token: string;
+      /** Token Type */
+      token_type: string;
+    };
     /** User */
     User: {
       /** Id */
       id?: number | null;
-      /** Name */
-      name: string;
-      /** E Mail */
-      e_mail: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** Email */
+      email: string;
       /** Password */
       password: string;
-      /** Seed */
-      seed: string;
+      /** City */
+      city: string | null;
+      /** Company */
+      company: string | null;
+      /** Work Position */
+      work_position: string | null;
+      /** Linkedin Url */
+      linkedin_url: string | null;
       /**
        * Created At
        * Format: date-time
@@ -381,41 +421,66 @@ export interface components {
       created_at?: string;
       /**
        * Role
-       * @default user
+       * @default pending
        */
       role: string;
     };
     /** UserCreateDTO */
     UserCreateDTO: {
-      /** Name */
-      name: string;
-      /** E Mail */
-      e_mail: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** Email */
+      email: string;
       /** Password */
       password: string;
-      /**
-       * Role
-       * @default admin
-       */
-      role: string;
+      /** City */
+      city?: string | null;
+      /** Company */
+      company?: string | null;
+      /** Work Position */
+      work_position?: string | null;
+      /** Linkedin Url */
+      linkedin_url?: string | null;
     };
     /** UserReadDTO */
     UserReadDTO: {
       /** Id */
       id: number;
-      /** Name */
-      name: string;
-      /** E Mail */
-      e_mail: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** Email */
+      email: string;
       /** Role */
       role: string;
+      /** City */
+      city?: string | null;
+      /** Company */
+      company?: string | null;
+      /** Work Position */
+      work_position?: string | null;
+      /** Linkedin Url */
+      linkedin_url?: string | null;
     };
     /** UserUpdateDTO */
     UserUpdateDTO: {
-      /** Name */
-      name: string;
+      /** First Name */
+      first_name?: string | null;
+      /** Last Name */
+      last_name?: string | null;
       /** Password */
-      password: string;
+      password?: string | null;
+      /** City */
+      city?: string | null;
+      /** Company */
+      company?: string | null;
+      /** Work Position */
+      work_position?: string | null;
+      /** Linkedin Url */
+      linkedin_url?: string | null;
     };
     /** ValidationError */
     ValidationError: {
@@ -488,6 +553,37 @@ export interface operations {
       };
     };
   };
+  get_user_users__user_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        user_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   update_user_users__user_id__put: {
     parameters: {
       query?: never;
@@ -540,6 +636,39 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  get_access_token_users_login_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginDTO"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Token"];
+        };
       };
       /** @description Validation Error */
       422: {

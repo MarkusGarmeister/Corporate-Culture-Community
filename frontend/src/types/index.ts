@@ -12,5 +12,6 @@ export interface Venue {
   capacity: number;
 }
 
+export type User = components["schemas"]["User"];
 export type Location = components["schemas"]["Location"];
 export type Rating = components["schemas"]["Rating"];
