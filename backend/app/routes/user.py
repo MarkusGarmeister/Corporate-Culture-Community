@@ -50,6 +50,14 @@ async def list_users(session: AsyncSession = Depends(get_session)):
     return result.all()
 
 
+@router.get("/{user_id}", response_model=User)
+async def get_user(user_id: int, session: AsyncSession = Depends(get_session)):
+    user = await session.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+
 @router.put("/{user_id}", response_model=User)
 async def update_user(
     user_id: int,
