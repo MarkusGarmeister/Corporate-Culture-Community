@@ -1,5 +1,5 @@
 import { Show } from "react-admin";
-import { VenueDetailCard } from "../../components/VenueDetailCard";
+import { LocationDetailCard } from "../../components/location/LocationDetailCard";
 
 export const LocationShow = () => {
   return (
@@ -11,7 +11,7 @@ export const LocationShow = () => {
         },
       }}
     >
-      <VenueDetailCard />
+      <LocationDetailCard />
     </Show>
   );
 };

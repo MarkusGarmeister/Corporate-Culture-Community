@@ -1,6 +1,6 @@
 import { List, useListContext } from "react-admin";
 import { Box, AppBar, Button } from "@mui/material";
-import { VenueCard } from "../../components/VenueCard";
+import { LocationCard } from "../../components/location/LocationCard";
 import { Location } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { SearchAndFilters } from "../../components/marketplace/SearchAndFilters";
@@ -40,7 +40,7 @@ const LocationGrid = () => {
           }}
         >
           {locations.map((location) => (
-            <VenueCard
+            <LocationCard
               key={location.id}
               location={location}
               onClick={() => navigate(`/locations/${location.id}/show`)}
