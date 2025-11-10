@@ -7,14 +7,14 @@ import {
   Box,
 } from "@mui/material";
 import { Star, People, LocationOn } from "@mui/icons-material";
-import { Location } from "../types";
+import { Location } from "../../types";
 
 interface VenueCardProps {
   location: Location;
   onClick?: () => void;
 }
 
-export const VenueCard = ({ location, onClick }: VenueCardProps) => {
+export const LocationCard = ({ location, onClick }: VenueCardProps) => {
   const priceDisplay = "€".repeat(2);
   const defaultImage =
     "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600";

@@ -9,13 +9,13 @@ import {
 import { Star, MessageSquare, MapPin, User } from "lucide-react";
 import { useState } from "react";
 import { useRecordContext } from "react-admin";
-import { Location } from "../types";
-import { colors } from "../theme";
-import { ShareExperienceDialog } from "./ShareExperience";
-import { Header } from "./Header";
-import { BackToMarket } from "./BackToMarket";
+import { Location } from "../../types";
+import { colors } from "../../theme";
+import { ShareExperienceDialog } from "../ShareExperience";
+import { Header } from "../Header";
+import { BackToMarket } from "../BackToMarket";
 
-export const VenueDetailCard = () => {
+export const LocationDetailCard = () => {
   const record = useRecordContext<Location>();
   const [shareExpOpen, setShareExpOpen] = useState(false);
   const defaultImage =
