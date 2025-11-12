@@ -1,8 +1,8 @@
 import { Toolbar, Box, Typography, Button } from "@mui/material";
-import { Building2, LogOut, User } from "lucide-react";
-import { colors } from "../theme";
+import { LogOut, User } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
 import { useGetIdentity, useGetOne } from "react-admin";
+import logo from "../assets/ccc-logo.png";
 
 export const Header = ({ backButton }: { backButton?: React.ReactNode }) => {
   const { data: userId } = useGetIdentity();
@@ -25,24 +25,16 @@ export const Header = ({ backButton }: { backButton?: React.ReactNode }) => {
       <Box sx={{ display: "flex", alignItems: "column", gap: 1 }}>
         {backButton}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Building2
-            style={{
-              height: "32px",
-              width: "32px",
-              color: colors.icon,
+          <Box
+            component="img"
+            src={logo}
+            alt="CCC Logo"
+            sx={{
+              height: "80px",
+              width: "auto",
+              objectFit: "contain",
             }}
           />
-          <Typography
-            variant="h6"
-            component="span"
-            sx={{
-              fontSize: "1.25rem",
-              fontWeight: 400,
-              color: colors.text,
-            }}
-          >
-            Corporate Culture Community
-          </Typography>
         </Box>
       </Box>
 
