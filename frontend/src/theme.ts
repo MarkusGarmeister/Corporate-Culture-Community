@@ -1,15 +1,19 @@
 import { createTheme } from "@mui/material/styles";
 
-// Monochrome theme based on designs
+// CCC Brand theme based on style guide
 export const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#1A1A1A", // Black for primary buttons and main elements
+      main: "#4A1D8C", // Purple from brand
+      light: "#6B2FB8",
+      dark: "#351563",
       contrastText: "#FFFFFF",
     },
     secondary: {
-      main: "#666666", // Gray for secondary text
+      main: "#8B00FF", // Bright purple/magenta from brand
+      light: "#A64DFF",
+      dark: "#6100B3",
       contrastText: "#FFFFFF",
     },
     background: {
@@ -77,11 +81,11 @@ export const theme = createTheme({
           fontSize: "1rem",
         },
         contained: {
-          backgroundColor: "#1A1A1A",
+          backgroundColor: "#4A1D8C",
           color: "#FFFFFF",
           boxShadow: "none",
           "&:hover": {
-            backgroundColor: "#000000",
+            backgroundColor: "#351563",
             boxShadow: "none",
           },
         },
@@ -142,12 +146,14 @@ export const theme = createTheme({
 export const colors = {
   background: "#FFFFFF",
   surface: "#FFFFFF",
-  primary: "#1A1A1A",
+  primary: "#4A1D8C", // Brand purple
+  secondary: "#8B00FF", // Bright purple/magenta
   text: "#1A1A1A",
   textSecondary: "#666666",
   border: "#E5E5E5",
   accent: "#FFC107", // Gold for ratings
-  icon: "#1A1A1A",
-  iconBg: "#F5F5F5", // Light gray background for icon containers
+  icon: "#4A1D8C", // Use brand purple for icons
+  iconBg: "#F3E5F5", // Light purple background for icon containers
   ctaText: "#FFFFFF",
+  gradient: "linear-gradient(135deg, #4A1D8C 0%, #8B00FF 100%)", // Purple gradient
 };
