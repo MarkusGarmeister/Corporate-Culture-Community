@@ -9,6 +9,8 @@ import { theme } from "./theme";
 import { SignupCompleted } from "./pages/SignupCompleted";
 import { NotFound } from "./pages/404NotFound";
 import { Welcome } from "./pages/Welcome";
+import { PrivacyPolicy } from "./pages/PrivacyPolicy";
+import { Imprint } from "./pages/Imprint";
 
 export const App = () => (
   <>
@@ -31,6 +33,8 @@ export const App = () => (
         <Route path="/signup/success" element={<SignupCompleted />} />
         <Route path="/login" element={<LandingPage />} />
         <Route path="/welcome" element={<Welcome />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/imprint" element={<Imprint />} />
       </CustomRoutes>
     </Admin>
   </>
