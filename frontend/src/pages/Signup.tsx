@@ -17,6 +17,7 @@ import {
   InputLabel,
   Checkbox,
   FormControlLabel,
+  Link,
 } from "@mui/material";
 
 const API_URL = "http://localhost:8000/";
@@ -293,7 +294,19 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox />}
-                label="I have read and agree to the Privacy Policy and Terms of Use."
+                label={
+                  <Typography variant="body2">
+                    I have read and agree to the{" "}
+                    <Link
+                      href="#/privacy-policy"
+                      target="_blank"
+                      rel="noopener"
+                      sx={{ color: "primary.main" }}
+                    >
+                      Privacy Policy.
+                    </Link>{" "}
+                  </Typography>
+                }
                 checked={isChecked}
                 onChange={(e, checked) => setIsChecked(checked)}
               />
