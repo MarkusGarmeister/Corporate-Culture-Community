@@ -83,13 +83,13 @@ export const Footer = () => {
               }}
             >
               <li>
-                <MuiLink href="#" sx={linkStyle}>
+                <MuiLink href="#/imprint" sx={linkStyle}>
                   Imprint
                 </MuiLink>
               </li>
               <li>
-                <MuiLink href="#" sx={linkStyle}>
-                  Data Privacy
+                <MuiLink href="#/privacy-policy" sx={linkStyle}>
+                  Privacy Policy
                 </MuiLink>
               </li>
             </Box>
