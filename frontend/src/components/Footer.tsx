@@ -1,6 +1,6 @@
 import { Box, Container, Typography, Link as MuiLink } from "@mui/material";
 import { Mail, Linkedin, Twitter } from "lucide-react";
-import logo from "../../assets/ccc-logo.png";
+import logo from "../assets/ccc-logo.png";
 
 const linkStyle = {
   fontSize: "0.875rem",
