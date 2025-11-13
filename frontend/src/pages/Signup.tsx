@@ -11,32 +11,97 @@ import {
   Alert,
   Box,
   Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 
 const API_URL = "http://localhost:8000/";
 
+const departments = [
+  {
+    value: "people-operations",
+    label: "1. People Operations",
+    description: "HR Manager, Payroll, People Ops, HRIS",
+  },
+  {
+    value: "talent-growth",
+    label: "2. Talent & Growth",
+    description: "Talent Acquisition, L&D, Employer Branding",
+  },
+  {
+    value: "culture-engagement",
+    label: "3. Culture & Engagement",
+    description:
+      "People & Culture Manager, Experience Manager, DEI, Internal Comms",
+  },
+  {
+    value: "workplace-experience",
+    label: "4. Workplace & Experience",
+    description: "Office Manager, Workplace Manager, Feelgood",
+  },
+  {
+    value: "leadership-strategy",
+    label: "5. Leadership & Strategy",
+    description:
+      "Chief People Officer, Head of People, HR Business Partner, Chief of Staff",
+  },
+];
 interface SignupPopup {
   open: boolean;
   onClose: () => void;
   onSignup: () => void;
 }
 
+interface SignupFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  city: string;
+  company: string;
+  jobPosition: string;
+  linkedInUrl: string;
+  department: string;
+}
+
+const validateFormData = (formData: SignupFormData) => {
+  return (
+    formData.firstName.trim() !== "" &&
+    formData.lastName.trim() !== "" &&
+    formData.email.trim() !== "" &&
+    formData.city.trim() !== "" &&
+    formData.company.trim() !== "" &&
+    formData.jobPosition.trim() !== "" &&
+    formData.department.trim() !== "" &&
+    formData.linkedInUrl.trim() !== ""
+  );
+};
+
 export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SignupFormData>({
     firstName: "",
     lastName: "",
     email: "",
-    password: "",
     city: "",
     company: "",
     jobPosition: "",
-    linkedinUrl: "",
+    linkedInUrl: "",
+    department: "",
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | { target: { name: string; value: string } },
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -50,11 +115,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
         first_name: formData.firstName,
         last_name: formData.lastName,
         email: formData.email,
-        password: formData.password,
-        city: formData.city || undefined,
-        company: formData.company || undefined,
-        work_position: formData.jobPosition || undefined,
-        linkedin_url: formData.linkedinUrl || undefined,
+        city: formData.city,
+        company: formData.company,
+        work_position: formData.jobPosition,
+        linkedin_url: formData.linkedInUrl,
+        department: formData.department,
       };
 
       const response = await axios.post(`${API_URL}users/`, backendData);
@@ -74,7 +139,17 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: "16px",
+        },
+      }}
+    >
       <DialogTitle sx={{ fontWeight: 600 }}>Join Our Community</DialogTitle>
 
       <DialogContent>
@@ -133,24 +208,10 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
               />
             </Grid>
 
-            {/* Password */}
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="password"
-                label="Password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                autoComplete="new-password"
-              />
-            </Grid>
-
             {/* City */}
             <Grid item xs={12}>
               <TextField
+                required
                 fullWidth
                 id="city"
                 label="City"
@@ -164,6 +225,7 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
             {/* Company */}
             <Grid item xs={12}>
               <TextField
+                required
                 fullWidth
                 id="company"
                 label="Company"
@@ -177,6 +239,7 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
             {/* Work Position */}
             <Grid item xs={12}>
               <TextField
+                required
                 fullWidth
                 id="jobPosition"
                 label="Work Position"
@@ -187,29 +250,64 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
               />
             </Grid>
 
+            {/* Departments */}
+            <Grid item xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel id="department-label">Department</InputLabel>
+                <Select
+                  labelId="department-label"
+                  id="department"
+                  name="department"
+                  value={formData.department}
+                  onChange={handleChange}
+                  label="Departments"
+                >
+                  {departments.map((dept) => (
+                    <MenuItem key={dept.value} value={dept.value}>
+                      <Box>
+                        <Typography variant="body1">{dept.label}</Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {dept.description}
+                        </Typography>
+                      </Box>
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
             {/* LinkedIn URL */}
             <Grid item xs={12}>
               <TextField
+                required
                 fullWidth
-                id="linkedinUrl"
+                id="linkedInUrl"
                 label="LinkedIn URL"
-                name="linkedinUrl"
+                name="linkedInUrl"
                 type="url"
-                value={formData.linkedinUrl}
+                value={formData.linkedInUrl}
                 onChange={handleChange}
                 placeholder="https://www.linkedin.com/in/yourprofile"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox />}
+                label="I have read and agree to the Privacy Policy and Terms of Use."
+                checked={isChecked}
+                onChange={(e, checked) => setIsChecked(checked)}
               />
             </Grid>
           </Grid>
         </Box>
       </DialogContent>
 
-      <DialogActions sx={{ px: 3, pb: 2, flexDirection: "column", gap: 1 }}>
+      <DialogActions sx={{ px: 3, pb: 2, flexDirection: "row", gap: 1 }}>
         <Button
           onClick={handleSubmit}
           variant="contained"
           fullWidth
-          disabled={loading}
+          disabled={!isChecked || !validateFormData(formData) || loading}
         >
           {loading ? "Signing up..." : "Sign Up"}
         </Button>
