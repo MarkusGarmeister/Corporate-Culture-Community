@@ -13,29 +13,27 @@ import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { Imprint } from "./pages/Imprint";
 
 export const App = () => (
-  <>
-    <Admin
-      layout={Layout}
-      authProvider={authProvider}
-      dataProvider={dataProvider}
-      theme={theme}
-      catchAll={NotFound}
-      loginPage={false}
-    >
-      <Resource
-        name="locations"
-        list={LocationList}
-        show={LocationShow}
-        create={LocationCreate}
-      />
-      <CustomRoutes noLayout>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup/success" element={<SignupCompleted />} />
-        <Route path="/login" element={<LandingPage />} />
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/imprint" element={<Imprint />} />
-      </CustomRoutes>
-    </Admin>
-  </>
+  <Admin
+    layout={Layout}
+    authProvider={authProvider}
+    dataProvider={dataProvider}
+    theme={theme}
+    catchAll={NotFound}
+    loginPage={false}
+  >
+    <Resource
+      name="locations"
+      list={LocationList}
+      show={LocationShow}
+      create={LocationCreate}
+    />
+    <CustomRoutes noLayout>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/signup/success" element={<SignupCompleted />} />
+      <Route path="/login" element={<LandingPage />} />
+      <Route path="/welcome" element={<Welcome />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/imprint" element={<Imprint />} />
+    </CustomRoutes>
+  </Admin>
 );
