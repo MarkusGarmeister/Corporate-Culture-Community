@@ -5,7 +5,12 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models import User
 from app.routes.dto.user import UserCreateDTO, UserUpdateDTO, Token, LoginDTO
 
-from app.auth import authenticate_user, create_access_token, get_password_hash
+from app.auth import (
+    authenticate_user,
+    create_access_token,
+    get_password_hash,
+    generate_random_password,
+)
 from app.routes import SessionDep
 from datetime import timedelta
 from app.config import Config
@@ -20,7 +25,10 @@ async def create_user(
     user: UserCreateDTO, session: AsyncSession = Depends(get_session)
 ):
 
-    hashed_password = get_password_hash(user.password)
+    random_password = "abc123"  # generate_random_password(16)
+    # TODO: send email to user with the generated password
+    hashed_password = get_password_hash(random_password)
+
     try:
         db_user = User(
             first_name=user.first_name,
@@ -31,6 +39,7 @@ async def create_user(
             company=user.company,
             work_position=user.work_position,
             linkedin_url=user.linkedin_url,
+            department=user.department,
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
