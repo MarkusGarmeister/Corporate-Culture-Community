@@ -19,10 +19,11 @@ class User(SQLModel, table=True):
     last_name: str
     email: str = Field(unique=True)
     password: str
-    city: Optional[str]
-    company: Optional[str]
-    work_position: Optional[str]
-    linkedin_url: Optional[str]
+    city: str
+    company: str
+    work_position: str
+    linkedin_url: str
+    department: str
     created_at: datetime = Field(default_factory=datetime.now)
     role: str = Field(default=RoleEnum.PENDING.value)
 

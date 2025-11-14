@@ -8,10 +8,11 @@ class UserReadDTO(BaseModel):
     last_name: str
     email: str
     role: str
-    city: Optional[str] = None
-    company: Optional[str] = None
-    work_position: Optional[str] = None
-    linkedin_url: Optional[str] = None
+    city: str
+    company: str
+    work_position: str
+    linkedin_url: str
+    department: str
 
     class Config:
         orm_mode = True
@@ -25,6 +26,7 @@ class UserUpdateDTO(BaseModel):
     company: Optional[str] = None
     work_position: Optional[str] = None
     linkedin_url: Optional[str] = None
+    department: Optional[str] = None
 
     class Config:
         orm_mode = True
@@ -34,11 +36,11 @@ class UserCreateDTO(BaseModel):
     first_name: str
     last_name: str
     email: str
-    password: str
-    city: Optional[str] = None
-    company: Optional[str] = None
-    work_position: Optional[str] = None
-    linkedin_url: Optional[str] = None
+    city: str
+    company: str
+    work_position: str
+    linkedin_url: str
+    department: str
 
     class Config:
         orm_mode = True
