@@ -4,7 +4,7 @@ import { Box, Container, Typography, Button } from "@mui/material";
 import { keyframes } from "@mui/system";
 import { ArrowRight } from "lucide-react";
 import logo from "../../assets/ccc-logo.png";
-import { Signup } from "../../pages/Signup";
+import { Signup } from "../Signup";
 import { Login } from "../Login";
 
 const heroFadeIn = keyframes`from { opacity: 0; transform: translateY(16px); }
