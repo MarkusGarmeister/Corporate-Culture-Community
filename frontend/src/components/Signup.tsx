@@ -19,6 +19,7 @@ import {
   FormControlLabel,
   Link,
 } from "@mui/material";
+import { useFormValidation } from "../hooks/useFormValidation";
 
 const API_URL = "http://localhost:8000/";
 
@@ -66,61 +67,53 @@ interface SignupFormData {
   jobPosition: string;
   linkedInUrl: string;
   department: string;
+  [key: string]: string;
 }
 
-const validateFormData = (formData: SignupFormData) => {
-  return (
-    formData.firstName.trim() !== "" &&
-    formData.lastName.trim() !== "" &&
-    formData.email.trim() !== "" &&
-    formData.city.trim() !== "" &&
-    formData.company.trim() !== "" &&
-    formData.jobPosition.trim() !== "" &&
-    formData.department.trim() !== "" &&
-    formData.linkedInUrl.trim() !== ""
-  );
+const validationRules = {
+  firstName: (value: string) =>
+    value.trim() !== "" ? "" : "First name is required",
+  lastName: (value: string) =>
+    value.trim() !== "" ? "" : "Last name is required",
+  email: (value: string) => {
+    if (value.trim() === "") return "Email is required";
+    if (!value.includes("@")) return "Email must be valid";
+    return "";
+  },
+  city: (value: string) => (value.trim() !== "" ? "" : "City is required"),
+  company: (value: string) =>
+    value.trim() !== "" ? "" : "Company is required",
+  jobPosition: (value: string) =>
+    value.trim() !== "" ? "" : "Job position is required",
+  linkedInUrl: (value: string) => {
+    if (value.trim() === "") return "LinkedIn URL is required";
+    if (!value.startsWith("https://www.linkedin.com/"))
+      return "LinkedIn URL must be valid";
+    return "";
+  },
+  department: (value: string) =>
+    value.trim() !== "" ? "" : "Department is required",
 };
 
 export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
-  const [formData, setFormData] = useState<SignupFormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    city: "",
-    company: "",
-    jobPosition: "",
-    linkedInUrl: "",
-    department: "",
-  });
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | { target: { name: string; value: string } },
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleFormSubmit = async (formValues: SignupFormData) => {
     setError("");
     setLoading(true);
 
     try {
       const backendData = {
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        email: formData.email,
-        city: formData.city,
-        company: formData.company,
-        work_position: formData.jobPosition,
-        linkedin_url: formData.linkedInUrl,
-        department: formData.department,
+        first_name: formValues.firstName,
+        last_name: formValues.lastName,
+        email: formValues.email,
+        city: formValues.city,
+        company: formValues.company,
+        work_position: formValues.jobPosition,
+        linkedin_url: formValues.linkedInUrl,
+        department: formValues.department,
       };
 
       const response = await axios.post(`${API_URL}users/`, backendData);
@@ -138,6 +131,22 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
       setLoading(false);
     }
   };
+
+  const { values, errors, handleChange, handleSubmit } =
+    useFormValidation<SignupFormData>(
+      {
+        firstName: "",
+        lastName: "",
+        email: "",
+        city: "",
+        company: "",
+        jobPosition: "",
+        linkedInUrl: "",
+        department: "",
+      },
+      validationRules,
+      handleFormSubmit,
+    );
 
   return (
     <Dialog
@@ -174,9 +183,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 id="firstName"
                 label="First Name"
                 name="firstName"
-                value={formData.firstName}
+                value={values.firstName}
                 onChange={handleChange}
                 autoComplete="given-name"
+                error={!!errors.firstName}
+                helperText={errors.firstName}
               />
             </Grid>
 
@@ -188,9 +199,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                value={formData.lastName}
+                value={values.lastName}
                 onChange={handleChange}
                 autoComplete="family-name"
+                error={!!errors.lastName}
+                helperText={errors.lastName}
               />
             </Grid>
 
@@ -203,9 +216,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 label="Email Address"
                 name="email"
                 type="email"
-                value={formData.email}
+                value={values.email}
                 onChange={handleChange}
                 autoComplete="email"
+                error={!!errors.email}
+                helperText={errors.email}
               />
             </Grid>
 
@@ -217,9 +232,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 id="city"
                 label="City"
                 name="city"
-                value={formData.city}
+                value={values.city}
                 onChange={handleChange}
                 autoComplete="address-level2"
+                error={!!errors.city}
+                helperText={errors.city}
               />
             </Grid>
 
@@ -231,9 +248,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 id="company"
                 label="Company"
                 name="company"
-                value={formData.company}
+                value={values.company}
                 onChange={handleChange}
                 autoComplete="organization"
+                error={!!errors.company}
+                helperText={errors.company}
               />
             </Grid>
 
@@ -245,21 +264,23 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 id="jobPosition"
                 label="Work Position"
                 name="jobPosition"
-                value={formData.jobPosition}
+                value={values.jobPosition}
                 onChange={handleChange}
                 autoComplete="organization-title"
+                error={!!errors.jobPosition}
+                helperText={errors.jobPosition}
               />
             </Grid>
 
             {/* Departments */}
             <Grid item xs={12}>
-              <FormControl fullWidth required>
+              <FormControl fullWidth required error={!!errors.department}>
                 <InputLabel id="department-label">Department</InputLabel>
                 <Select
                   labelId="department-label"
                   id="department"
                   name="department"
-                  value={formData.department}
+                  value={values.department}
                   onChange={handleChange}
                   label="Departments"
                 >
@@ -274,6 +295,15 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                     </MenuItem>
                   ))}
                 </Select>
+                {errors.department && (
+                  <Typography
+                    variant="caption"
+                    color="error"
+                    sx={{ mt: 0.5, ml: 1.75 }}
+                  >
+                    {errors.department}
+                  </Typography>
+                )}
               </FormControl>
             </Grid>
 
@@ -286,11 +316,15 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 label="LinkedIn URL"
                 name="linkedInUrl"
                 type="url"
-                value={formData.linkedInUrl}
+                value={values.linkedInUrl}
                 onChange={handleChange}
                 placeholder="https://www.linkedin.com/in/yourprofile"
+                error={!!errors.linkedInUrl}
+                helperText={errors.linkedInUrl}
               />
             </Grid>
+
+            {/* Privacy Policy Checkbox */}
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox />}
@@ -320,7 +354,7 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
           onClick={handleSubmit}
           variant="contained"
           fullWidth
-          disabled={!isChecked || !validateFormData(formData) || loading}
+          disabled={!isChecked || loading}
         >
           {loading ? "Signing up..." : "Sign Up"}
         </Button>
