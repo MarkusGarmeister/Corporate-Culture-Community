@@ -9,12 +9,24 @@ from sqlmodel import select
 from typing import Annotated
 from fastapi import Depends, HTTPException, status
 from sqlmodel.ext.asyncio.session import AsyncSession
+import secrets
+import string
 
 
 config = Config()
 
 password_hasher = PasswordHash.recommended()
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="users/login")
+
+
+def generate_random_password(length: int = 16) -> str:
+
+    letters = string.ascii_letters
+    digits = string.digits
+    special_chars = "!@#$%^&*"
+    all_chars = letters + digits + special_chars
+    password = [secrets.choice(all_chars) for _ in range(length)]
+    return "".join(password)
 
 
 def verify_password(plain_password: str, hashed_password: str):
