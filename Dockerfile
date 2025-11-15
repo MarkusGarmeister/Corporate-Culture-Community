@@ -1,8 +1,9 @@
 FROM node:22.18 AS frontend-build
 WORKDIR /app
-COPY ./frontend/* .
+COPY ./frontend/package.json frontend/package-lock.json* ./
 RUN npm install
 COPY frontend .
+RUN ls -a 
 RUN npm run build
 
 
