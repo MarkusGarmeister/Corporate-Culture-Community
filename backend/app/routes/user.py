@@ -15,6 +15,7 @@ from app.routes import SessionDep
 from datetime import timedelta
 from app.config import Config
 from .__init__ import get_session
+from app.service import AsyncSMTPClient
 
 config = Config()
 router = APIRouter()
@@ -25,7 +26,30 @@ async def create_user(
     user: UserCreateDTO, session: AsyncSession = Depends(get_session)
 ):
 
-    random_password = "abc123"  # generate_random_password(16)
+    random_password = generate_random_password(16)
+
+    print(
+        config.SMTP_HOST, config.SMTP_PORT, config.SMTP_USERNAME, config.SMTP_PASSWORD
+    )
+    try:
+        async with AsyncSMTPClient(
+            host=config.SMTP_HOST,
+            port=config.SMTP_PORT,
+            username=config.SMTP_USERNAME,
+            password=config.SMTP_PASSWORD,
+        ) as smtp_client:
+            subject = "Your Account Has Been Created"
+            body = f"Hello {user.first_name},\n\nYour account has been created. Your temporary password is: {random_password}\n\nPlease change your password after logging in."
+            a = await smtp_client.send_message(
+                subject=subject,
+                body=body,
+                to_addrs=user.email,
+            )
+            print(f"Email sent: {a}")
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send email") from e
+
     # TODO: send email to user with the generated password
     hashed_password = get_password_hash(random_password)
 

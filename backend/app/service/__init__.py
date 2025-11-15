@@ -35,7 +35,6 @@ class AsyncSMTPClient:
             hostname=self.host,
             port=self.port,
             timeout=self.timeout,
-            start_tls=True,
         )
         await smtp.connect()
         await smtp.login(self.username, self.password or "")

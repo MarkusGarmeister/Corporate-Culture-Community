@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
 
 from app.routes.user import router as user_router
 from app.routes.location import router as location_router
@@ -22,3 +24,8 @@ app.include_router(user_router, prefix="/users", tags=["users"])
 app.include_router(location_router, prefix="/locations", tags=["locations"])
 app.include_router(rating_router, prefix="/ratings", tags=["ratings"])
 app.include_router(labels_router, prefix="/labels", tags=["labels"])
+
+app.mount(
+    "/",
+    StaticFiles(directory="./static/dist", html=True),
+)
