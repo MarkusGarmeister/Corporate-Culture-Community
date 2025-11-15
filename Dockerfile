@@ -13,4 +13,4 @@ WORKDIR /app
 COPY ./backend .
 RUN poetry sync
 COPY --from=frontend-build /app/dist ./static/dist
-CMD ["poetry", "run", "uvicorn", "app.main:app"]
+CMD ["poetry", "run", "uvicorn", "main:app"]
