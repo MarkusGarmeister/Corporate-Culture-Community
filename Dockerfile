@@ -2,10 +2,13 @@ FROM node:22.18 AS frontend-build
 WORKDIR /app
 COPY ./frontend/* .
 RUN npm install
+COPY frontend .
 RUN npm run build
 
 
 FROM python:3.12
+RUN pip install --upgrade pip \
+    && pip install poetry
 WORKDIR /app 
 COPY ./backend .
 RUN poetry sync
