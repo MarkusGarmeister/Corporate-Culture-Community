@@ -3,7 +3,7 @@ WORKDIR /app
 COPY ./frontend/package.json frontend/package-lock.json* ./
 RUN npm install
 COPY frontend .
-RUN ls -a 
+RUN ls -a /app/pages
 RUN npm run build
 
 
