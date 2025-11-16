@@ -1,4 +1,5 @@
 from logging.config import fileConfig
+import os
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -14,10 +15,20 @@ from app.models import User, Label, Location, Rating, LocationLabel
 
 config = context.config
 
+# Override sqlalchemy.url from environment variable if present
+db_url = os.getenv("DATABASE_URL")
+if db_url:
+    # Replace async drivers with sync drivers for migrations
+    # Alembic requires synchronous database drivers
+    db_url = db_url.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
+    # Also handle the old postgres:// format from Fly.io
+    db_url = db_url.replace("postgres://", "postgresql+psycopg2://")
+    config.set_main_option("sqlalchemy.url", db_url)
+
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    fileConfig(config.config_file_name, disable_existing_loggers=False)
 
 # add your model's MetaData object here
 # for 'autogenerate' support

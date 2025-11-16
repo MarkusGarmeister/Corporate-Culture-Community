@@ -1,11 +1,24 @@
 import os
 from dotenv import load_dotenv
 
+# Load .env file if it exists (for local development)
 load_dotenv()
 
 
 class Config:
-    DATABASE_URL: str = os.getenv("DATABASE_URL")
+    _DATABASE_URL: str = os.getenv("DATABASE_URL")
+
+    @property
+    def DATABASE_URL(self) -> str:
+        """Convert postgres URL to sync format with psycopg2 driver"""
+        if self._DATABASE_URL:
+            # Replace postgres:// with postgresql+psycopg2://
+            url = self._DATABASE_URL.replace("postgres://", "postgresql+psycopg2://")
+            # Also handle postgresql:// (without driver)
+            if url.startswith("postgresql://") and "postgresql+psycopg2://" not in url:
+                url = url.replace("postgresql://", "postgresql+psycopg2://")
+            return url
+        return self._DATABASE_URL
 
     JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY")
     JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
