@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, Query, Response
-from sqlmodel import select, func
-from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlmodel import select, func, Session
 from typing import List, Optional
 from app.models.data_models import Location, User
 from app.routes.dto.location import (
@@ -18,9 +17,9 @@ router = APIRouter()
 
 
 @router.post("/", response_model=LocationReadDTO)
-async def create_location(
+def create_location(
     location: LocationCreateDTO,
-    session: AsyncSession = Depends(get_session),
+    session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     try:
@@ -31,10 +30,10 @@ async def create_location(
         raise HTTPException(status_code=400, detail=str(e))
     try:
         session.add(db_location)
-        await session.commit()
-        await session.refresh(db_location)
+        session.commit()
+        session.refresh(db_location)
     except Exception as e:
-        await session.rollback()
+        session.rollback()
         raise HTTPException(status_code=500, detail=str(e))
 
     stmt = (
@@ -42,13 +41,13 @@ async def create_location(
         .where(Location.id == db_location.id)
         .options(selectinload(Location.labels))
     )
-    db_location = (await session.exec(stmt)).one()
+    db_location = session.exec(stmt).one()
 
     return db_location
 
 
 @router.get("/", response_model=List[LocationReadDTO])
-async def read_locations(
+def read_locations(
     response: Response,
     skip: int = 0,
     limit: int = 100,
@@ -56,7 +55,7 @@ async def read_locations(
     city: Optional[str] = Query(None),
     min_capacity: Optional[int] = Query(None),
     max_price_range: Optional[int] = Query(None),
-    session: AsyncSession = Depends(get_session),
+    session: Session = Depends(get_session),
 ):
     query = select(Location).options(selectinload(Location.labels))
 
@@ -80,9 +79,9 @@ async def read_locations(
     if max_price_range:
         count_query = count_query.where(Location.price_range <= max_price_range)
 
-    total = await session.scalar(count_query)
+    total = session.scalar(count_query)
 
-    result = await session.exec(query.offset(skip).limit(limit))
+    result = session.exec(query.offset(skip).limit(limit))
     locations = result.all()
 
     # Set Content-Range header
@@ -93,7 +92,7 @@ async def read_locations(
 
 
 @router.get("/{location_id}", response_model=LocationSingleReadDTO)
-async def read_location(location_id: int, session: AsyncSession = Depends(get_session)):
+def read_location(location_id: int, session: Session = Depends(get_session)):
     stmt = (
         select(Location)
         .where(Location.id == location_id)
@@ -103,7 +102,7 @@ async def read_location(location_id: int, session: AsyncSession = Depends(get_se
             selectinload(Location.ratings),
         )
     )
-    result = await session.exec(stmt)
+    result = session.exec(stmt)
     location = result.first()
     if not location:
         raise HTTPException(status_code=404, detail="Location not found")
@@ -111,13 +110,13 @@ async def read_location(location_id: int, session: AsyncSession = Depends(get_se
 
 
 @router.put("/{location_id}", response_model=Location)
-async def update_location(
+def update_location(
     location_id: int,
     updated: LocationUpdateDTO,
-    session: AsyncSession = Depends(get_session),
+    session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
-    location = await session.get(Location, location_id)
+    location = session.get(Location, location_id)
     if not location:
         raise HTTPException(status_code=404, detail="Location not found")
     if location.created_by != current_user.id:
@@ -130,21 +129,21 @@ async def update_location(
         setattr(location, key, value)
     try:
         session.add(location)
-        await session.commit()
-        await session.refresh(location)
+        session.commit()
+        session.refresh(location)
         return location
     except Exception as e:
-        await session.rollback()
+        session.rollback()
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.delete("/{location_id}", status_code=204)
-async def delete_location(
+def delete_location(
     location_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
-    location = await session.get(Location, location_id)
+    location = session.get(Location, location_id)
     if not location:
         raise HTTPException(status_code=404, detail="Location not found")
     if location.created_by != current_user.id:
@@ -152,5 +151,5 @@ async def delete_location(
             status_code=403, detail="Not allowed to delete this location"
         )
 
-    await session.delete(location)
-    await session.commit()
+    session.delete(location)
+    session.commit()
