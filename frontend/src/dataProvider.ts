@@ -1,6 +1,6 @@
 import simpleRestProvider from "ra-data-simple-rest";
 
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.REACT_APP_API_URL || "https://joinculture.co/";
 
 export const dataProvider = simpleRestProvider(API_URL);
 

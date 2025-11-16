@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import { useFormValidation } from "../hooks/useFormValidation";
 
-const API_URL = "http://localhost:8000/";
+const API_URL = process.env.REACT_APP_API_URL || "https://joinculture.co/";
 
 const departments = [
   {

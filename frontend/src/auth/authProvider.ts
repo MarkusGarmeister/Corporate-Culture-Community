@@ -1,7 +1,7 @@
 import { AuthProvider } from "react-admin";
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/";
+const API_URL = process.env.REACT_APP_API_URL || "https://joinculture.co/";
 
 export const authProvider: AuthProvider = {
   login: async ({ username, password }) => {
