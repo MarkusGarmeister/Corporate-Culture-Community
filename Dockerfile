@@ -9,8 +9,10 @@ RUN npm run build
 FROM python:3.12
 RUN pip install --upgrade pip \
     && pip install poetry
-WORKDIR /app 
+WORKDIR /app
 COPY ./backend .
-RUN poetry sync
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi
 COPY --from=frontend-build /app/dist ./static/dist
-CMD ["poetry", "run", "uvicorn", "main:app"]
+
+CMD ["/bin/sh", "-c", "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"]
