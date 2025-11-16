@@ -9,6 +9,7 @@ class RoleEnum(PyEnum):
     ADMIN = "admin"
     USER = "user"
     PENDING = "pending"
+    AMBASSADOR = "ambassador"
 
 
 class User(SQLModel, table=True):

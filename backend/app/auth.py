@@ -1,5 +1,6 @@
 from app.config import Config
 from datetime import timezone, datetime, timedelta
+from app.models.data_models import RoleEnum
 from jose import jwt, JWTError
 from pwdlib import PasswordHash
 from fastapi.security import OAuth2PasswordBearer
@@ -8,7 +9,6 @@ from app.models import User
 from sqlmodel import select
 from typing import Annotated
 from fastapi import Depends, HTTPException, status
-from sqlmodel.ext.asyncio.session import AsyncSession
 import secrets
 import string
 
@@ -50,17 +50,19 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-async def authenticate_user(email: str, password: str, session: SessionDep):
-    result = await session.exec(select(User).filter(User.email == email))
+def authenticate_user(email: str, password: str, session: SessionDep):
+    result = session.exec(select(User).filter(User.email == email))
     user = result.first()
-    if not user:
-        return False
-    if not verify_password(password, user.password):
+    if (
+        not user
+        or user.role == RoleEnum.PENDING.value
+        or not verify_password(password, user.password)
+    ):
         return False
     return user
 
 
-async def get_current_user(
+def get_current_user(
     token: Annotated[str, Depends(oauth2_bearer)],
     session: SessionDep,
 ) -> User:
@@ -76,12 +78,18 @@ async def get_current_user(
                 detail="Invalid credentials",
             )
 
-        result = await session.exec(select(User).where(User.id == user_id))
+        result = session.exec(select(User).where(User.id == user_id))
         user = result.first()
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="User not found",
+            )
+
+        if user.role == RoleEnum.PENDING.value:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="User account is pending approval",
             )
 
         return user
@@ -90,3 +98,7 @@ async def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token",
         )
+
+
+def is_admin_user(user: User) -> bool:
+    return user.role == RoleEnum.ADMIN.value
