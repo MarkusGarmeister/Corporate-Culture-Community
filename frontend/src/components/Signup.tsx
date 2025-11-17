@@ -11,113 +11,34 @@ import {
   Alert,
   Box,
   Grid,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   Checkbox,
   FormControlLabel,
   Link,
 } from "@mui/material";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { DepartmentDropDown } from "./Departments";
+import { validationRules } from "../utils/validation";
+import { User } from "../types";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
 
-const departments = [
-  {
-    value: "people-operations",
-    label: "1. People Operations",
-    description: "HR Manager, Payroll, People Ops, HRIS",
-  },
-  {
-    value: "talent-growth",
-    label: "2. Talent & Growth",
-    description: "Talent Acquisition, L&D, Employer Branding",
-  },
-  {
-    value: "culture-engagement",
-    label: "3. Culture & Engagement",
-    description:
-      "People & Culture Manager, Experience Manager, DEI, Internal Comms",
-  },
-  {
-    value: "workplace-experience",
-    label: "4. Workplace & Experience",
-    description: "Office Manager, Workplace Manager, Feelgood",
-  },
-  {
-    value: "leadership-strategy",
-    label: "5. Leadership & Strategy",
-    description:
-      "Chief People Officer, Head of People, HR Business Partner, Chief of Staff",
-  },
-];
 interface SignupPopup {
   open: boolean;
   onClose: () => void;
   onSignup: () => void;
 }
 
-interface SignupFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  city: string;
-  company: string;
-  jobPosition: string;
-  linkedInUrl: string;
-  department: string;
-  [key: string]: string;
-}
-
-const validationRules = {
-  firstName: (value: string) =>
-    value.trim() !== "" ? "" : "First name is required",
-  lastName: (value: string) =>
-    value.trim() !== "" ? "" : "Last name is required",
-  email: (value: string) => {
-    if (value.trim() === "") return "Email is required";
-    if (!value.includes("@")) return "Email must be valid";
-    return "";
-  },
-  city: (value: string) => (value.trim() !== "" ? "" : "City is required"),
-  company: (value: string) =>
-    value.trim() !== "" ? "" : "Company is required",
-  jobPosition: (value: string) =>
-    value.trim() !== "" ? "" : "Job position is required",
-  linkedInUrl: (value: string) => {
-    if (value.trim() === "") return "LinkedIn URL is required";
-    if (!value.startsWith("https://www.linkedin.com/"))
-      return "LinkedIn URL must be valid";
-    return "";
-  },
-  department: (value: string) =>
-    value.trim() !== "" ? "" : "Department is required",
-};
-
 export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleFormSubmit = async (formValues: SignupFormData) => {
+  const handleFormSubmit = async (formValues: User) => {
     setError("");
     setLoading(true);
 
     try {
-      const backendData = {
-        first_name: formValues.firstName,
-        last_name: formValues.lastName,
-        email: formValues.email,
-        city: formValues.city,
-        company: formValues.company,
-        work_position: formValues.jobPosition,
-        linkedin_url: formValues.linkedInUrl,
-        department: formValues.department,
-      };
-
-      const response = await axios.post(`${API_URL}/users/`, backendData);
+      const response = await axios.post(`${API_URL}/users/`, formValues);
       console.log("Signup successful:", response.data);
 
       onSignup();
@@ -134,15 +55,15 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
   };
 
   const { values, errors, handleChange, handleSubmit } =
-    useFormValidation<SignupFormData>(
+    useFormValidation<User>(
       {
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         email: "",
         city: "",
         company: "",
-        jobPosition: "",
-        linkedInUrl: "",
+        work_position: "",
+        linkedin_url: "",
         department: "",
       },
       validationRules,
@@ -184,11 +105,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 id="firstName"
                 label="First Name"
                 name="firstName"
-                value={values.firstName}
+                value={values.first_name}
                 onChange={handleChange}
                 autoComplete="given-name"
-                error={!!errors.firstName}
-                helperText={errors.firstName}
+                error={!!errors.first_name}
+                helperText={errors.first_name}
               />
             </Grid>
 
@@ -200,11 +121,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                value={values.lastName}
+                value={values.last_name}
                 onChange={handleChange}
                 autoComplete="family-name"
-                error={!!errors.lastName}
-                helperText={errors.lastName}
+                error={!!errors.last_name}
+                helperText={errors.last_name}
               />
             </Grid>
 
@@ -265,11 +186,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 id="jobPosition"
                 label="Work Position"
                 name="jobPosition"
-                value={values.jobPosition}
+                value={values.work_position}
                 onChange={handleChange}
                 autoComplete="organization-title"
-                error={!!errors.jobPosition}
-                helperText={errors.jobPosition}
+                error={!!errors.work_position}
+                helperText={errors.work_position}
               />
             </Grid>
 
@@ -296,11 +217,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 label="LinkedIn URL"
                 name="linkedInUrl"
                 type="url"
-                value={values.linkedInUrl}
+                value={values.linkedin_url}
                 onChange={handleChange}
                 placeholder="https://www.linkedin.com/in/yourprofile"
-                error={!!errors.linkedInUrl}
-                helperText={errors.linkedInUrl}
+                error={!!errors.linkedin_url}
+                helperText={errors.linkedin_url}
               />
             </Grid>
 
