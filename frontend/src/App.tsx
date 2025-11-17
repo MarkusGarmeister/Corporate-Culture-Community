@@ -17,6 +17,7 @@ import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { Imprint } from "./pages/Imprint";
 import { UserList } from "./pages/User/index.tsx";
 import { UserProfilePage } from "./pages/User/UserProfile.tsx";
+import { SetPassword } from "./pages/SetPassword.tsx";
 
 export const App = () => (
   <Admin
@@ -41,6 +42,7 @@ export const App = () => (
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/imprint" element={<Imprint />} />
+      <Route path="/set-password" element={<SetPassword />} />
     </CustomRoutes>
   </Admin>
 );
