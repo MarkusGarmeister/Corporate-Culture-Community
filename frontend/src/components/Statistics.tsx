@@ -1,7 +1,4 @@
-import { useState } from "react";
 import { Card, CardContent, Box, Typography, Grid } from "@mui/material";
-
-import { MapPin, MessageSquare, Star } from "lucide-react";
 
 interface StatisticsItems {
   label: string;

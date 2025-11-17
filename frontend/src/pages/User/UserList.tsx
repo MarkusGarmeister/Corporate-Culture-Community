@@ -153,7 +153,7 @@ export const UserList = () => {
         <TextField source="work_position" />
         <FunctionField
           label="Role"
-          render={(record: any) => (
+          render={(record) => (
             <Chip
               label={record.role}
               color={
