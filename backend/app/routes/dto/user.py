@@ -55,3 +55,8 @@ class Token(BaseModel):
 class LoginDTO(BaseModel):
     email: str
     password: str
+
+
+class SetPasswordDTO(BaseModel):
+    token: str
+    password: str

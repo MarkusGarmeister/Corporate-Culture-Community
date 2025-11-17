@@ -1,3 +1,4 @@
+import base64
 from typing import List, Optional
 from app.models.data_models import RoleEnum
 from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
@@ -9,6 +10,7 @@ from app.routes.dto.user import (
     UserUpdateDTO,
     Token,
     LoginDTO,
+    SetPasswordDTO,
 )
 import traceback
 
@@ -195,6 +197,32 @@ def approve_user(
         session.commit()
         session.refresh(db_user)
         return db_user
+    except Exception as e:
+        session.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/set_password", response_model=UserReadDTO)
+def set_password(
+    data: SetPasswordDTO,
+    session: Session = Depends(get_session),
+):
+    try:
+        decoded_email = base64.urlsafe_b64decode(data.token).decode()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid token")
+
+    user = session.exec(select(User).where(User.email == decoded_email)).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    hashed_password = get_password_hash(data.password)
+    user.password = hashed_password
+    try:
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+        return user
     except Exception as e:
         session.rollback()
         raise HTTPException(status_code=500, detail=str(e))
