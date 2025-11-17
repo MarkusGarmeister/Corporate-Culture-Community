@@ -16,6 +16,7 @@ import { Welcome } from "./pages/Welcome";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { Imprint } from "./pages/Imprint";
 import { UserList } from "./pages/User/index.tsx";
+import { UserProfilePage } from "./pages/UserProfile.tsx";
 
 export const App = () => (
   <Admin
@@ -32,7 +33,7 @@ export const App = () => (
       show={LocationShow}
       create={LocationCreate}
     />
-    <Resource name="users" list={UserList} />
+    <Resource name="users" list={UserList} show={UserProfilePage} />
     <CustomRoutes noLayout>
       <Route path="/" element={<LandingPage />} />
       <Route path="/signup/success" element={<SignupCompleted />} />
