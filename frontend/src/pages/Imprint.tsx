@@ -26,11 +26,11 @@ export const Imprint = () => {
               <strong>Corporate Culture Community</strong>
             </Typography>
             <Typography variant="body1" sx={{ lineHeight: 1.8 }}>
-              [Your Name / Company Name]
+              Deniz Sebik / Corporate Culture Community
               <br />
-              [Street Address]
+              Stresemannstraße 23
               <br />
-              [Postal Code] Berlin
+              10963 Berlin
               <br />
               Germany
             </Typography>
@@ -58,9 +58,9 @@ export const Imprint = () => {
               Represented By
             </Typography>
             <Typography variant="body1" sx={{ lineHeight: 1.8 }}>
-              [Your Full Name]
+              Deniz Sebik
               <br />
-              [Position/Title]
+              CEO / Founder
             </Typography>
           </Box>
 
@@ -77,13 +77,6 @@ export const Imprint = () => {
             <Typography variant="body1" sx={{ lineHeight: 1.8, mb: 2 }}>
               According to Section 55, Para. 2 RStV (German Interstate
               Broadcasting Treaty):
-            </Typography>
-            <Typography variant="body1" sx={{ lineHeight: 1.8 }}>
-              [Your Full Name]
-              <br />
-              [Street Address]
-              <br />
-              [Postal Code] Berlin, Germany
             </Typography>
           </Box>
 
