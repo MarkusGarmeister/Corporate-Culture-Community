@@ -102,12 +102,11 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
               <TextField
                 required
                 fullWidth
-                id="firstName"
+                id="first_name"
                 label="First Name"
-                name="firstName"
+                name="first_name"
                 value={values.first_name}
                 onChange={handleChange}
-                autoComplete="given-name"
                 error={!!errors.first_name}
                 helperText={errors.first_name}
               />
@@ -120,10 +119,9 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 fullWidth
                 id="lastName"
                 label="Last Name"
-                name="lastName"
+                name="last_name"
                 value={values.last_name}
                 onChange={handleChange}
-                autoComplete="family-name"
                 error={!!errors.last_name}
                 helperText={errors.last_name}
               />
@@ -172,7 +170,6 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 name="company"
                 value={values.company}
                 onChange={handleChange}
-                autoComplete="organization"
                 error={!!errors.company}
                 helperText={errors.company}
               />
@@ -185,10 +182,9 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 fullWidth
                 id="jobPosition"
                 label="Work Position"
-                name="jobPosition"
+                name="work_position"
                 value={values.work_position}
                 onChange={handleChange}
-                autoComplete="organization-title"
                 error={!!errors.work_position}
                 helperText={errors.work_position}
               />
@@ -215,7 +211,7 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
                 fullWidth
                 id="linkedInUrl"
                 label="LinkedIn URL"
-                name="linkedInUrl"
+                name="linkedin_url"
                 type="url"
                 value={values.linkedin_url}
                 onChange={handleChange}

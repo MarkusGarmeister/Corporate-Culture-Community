@@ -1,9 +1,9 @@
 import PasswordValidator from "password-validator";
 
 export const validationRules = {
-  firstName: (value: string) =>
+  first_name: (value: string) =>
     value.trim() !== "" ? "" : "First name is required",
-  lastName: (value: string) =>
+  last_name: (value: string) =>
     value.trim() !== "" ? "" : "Last name is required",
   email: (value: string) => {
     if (value.trim() === "") return "Email is required";
@@ -13,9 +13,9 @@ export const validationRules = {
   city: (value: string) => (value.trim() !== "" ? "" : "City is required"),
   company: (value: string) =>
     value.trim() !== "" ? "" : "Company is required",
-  jobPosition: (value: string) =>
+  work_position: (value: string) =>
     value.trim() !== "" ? "" : "Job position is required",
-  linkedInUrl: (value: string) => {
+  linkedin_url: (value: string) => {
     if (value.trim() === "") return "LinkedIn URL is required";
     if (!value.startsWith("https://www.linkedin.com/"))
       return "LinkedIn URL must be valid";
