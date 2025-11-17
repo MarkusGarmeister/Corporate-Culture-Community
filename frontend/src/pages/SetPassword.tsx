@@ -16,6 +16,9 @@ import { NotFound } from "./404NotFound";
 import { CheckCircle2 } from "lucide-react";
 import { passwordRules, passwordRequirements } from "../utils/validation";
 import { useFormValidation } from "../hooks/useFormValidation";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
 
 interface SetPasswordForm {
   password: string;
@@ -55,16 +58,24 @@ export const SetPassword = () => {
   const [matchPasswordError, setMatchPasswordError] = useState("");
 
   const handleSetPassword = async (formValues: SetPasswordForm) => {
-    // Check if passwords match
     if (formValues.password !== formValues.confirmPassword) {
       setMatchPasswordError("Passwords do not match");
       return;
     }
     setMatchPasswordError("");
     setLoading(true);
-    //TODO backend call to set password
-    setLoading(false);
-    navigate("/login");
+
+    try {
+      const response = await axios.post(`${API_URL}/users/set_password/`, {
+        token,
+        password: formValues.password,
+      });
+      navigate("/login");
+    } catch (error) {
+      setMatchPasswordError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const { values, errors, handleChange, handleSubmit } =
