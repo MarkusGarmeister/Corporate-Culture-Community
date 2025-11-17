@@ -20,7 +20,7 @@ import { DepartmentDropDown } from "./Departments";
 import { validationRules } from "../utils/validation";
 import { User } from "../types";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
+const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co";
 
 interface SignupPopup {
   open: boolean;
