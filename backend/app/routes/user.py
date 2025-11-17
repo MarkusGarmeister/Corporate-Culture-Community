@@ -1,6 +1,6 @@
 from typing import List, Optional
 from app.models.data_models import RoleEnum
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
 from sqlmodel import select, Session
 from app.models import User
 from app.routes.dto.user import (
@@ -83,15 +83,25 @@ async def create_user(user: UserCreateDTO, session: Session = Depends(get_sessio
 
 @router.get("/", response_model=List[UserReadDTO])
 def list_users(
+    response: Response,
     session: Session = Depends(get_session),
     pending: Optional[bool] = Query(None),
 ):
     if pending is not None and pending:
-        result = session.exec(select(User).where(User.role == RoleEnum.PENDING.value))
-        return result.all()
+        users_pending = session.exec(
+            select(User).where(User.role == RoleEnum.PENDING.value)
+        ).all()
+        total_users_pending = len(users_pending)
+        response.headers["Content-Range"] = (
+            f"users 0-{len(users_pending)-1}/{total_users_pending}"
+        )
+        return users_pending
 
-    result = session.exec(select(User))
-    return result.all()
+    users = session.exec(select(User)).all()
+    total_users = len(users)
+
+    response.headers["Content-Range"] = f"users 0-{len(users)-1}/{total_users}"
+    return users
 
 
 @router.get("/{user_id}", response_model=UserReadDTO)
@@ -111,9 +121,26 @@ def update_user(
     db_user = session.get(User, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
-    hashed_password = get_password_hash(updated_user.password)
-    db_user.name = updated_user.name
-    db_user.password = hashed_password
+
+    if updated_user.first_name is not None:
+        db_user.first_name = updated_user.first_name
+    if updated_user.last_name is not None:
+        db_user.last_name = updated_user.last_name
+    if updated_user.city is not None:
+        db_user.city = updated_user.city
+    if updated_user.company is not None:
+        db_user.company = updated_user.company
+    if updated_user.work_position is not None:
+        db_user.work_position = updated_user.work_position
+    if updated_user.linkedin_url is not None:
+        db_user.linkedin_url = updated_user.linkedin_url
+    if updated_user.department is not None:
+        db_user.department = updated_user.department
+    if updated_user.role is not None:
+        db_user.role = updated_user.role
+    if updated_user.password is not None:
+        hashed_password = get_password_hash(updated_user.password)
+        db_user.password = hashed_password
 
     try:
         session.add(db_user)

@@ -27,6 +27,7 @@ class UserUpdateDTO(BaseModel):
     work_position: Optional[str] = None
     linkedin_url: Optional[str] = None
     department: Optional[str] = None
+    role: Optional[str] = None
 
     class Config:
         orm_mode = True
