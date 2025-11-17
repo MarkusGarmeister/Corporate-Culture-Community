@@ -1,4 +1,3 @@
-import base64
 from typing import List, Optional
 from app.models.data_models import RoleEnum
 from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
@@ -26,6 +25,8 @@ from datetime import timedelta
 from app.config import Config
 from .__init__ import get_session
 from app.service import AsyncSMTPClient
+from jose import JWTError, jwt
+
 
 config = Config()
 router = APIRouter()
@@ -42,8 +43,8 @@ async def create_user(user: UserCreateDTO, session: Session = Depends(get_sessio
             username=config.SMTP_USERNAME,
             password=config.SMTP_PASSWORD,
         ) as smtp_client:
-            subject = "Your Account Has Been Created"
-            body = f"Hello {user.first_name},\n\nYour account has been created. Your temporary password is: {random_password}\n\nPlease change your password after logging in. \n\nBest regards,\nCorporate Culture Community Team"
+            subject = "Thank You for Your Application"
+            body = f"Hello {user.first_name},\n\nThank you for your application to the Corporate Culture Community.\n\nWe’ll review your application over the next few days and get back to you.\n\nBest regards,\nCorporate Culture Community Team"
             a = await smtp_client.send_message(
                 subject=subject,
                 body=body,
@@ -176,7 +177,7 @@ def get_access_token(login_data: LoginDTO, session: SessionDep) -> Token:
 
 
 @router.post("/{user_id}/approve", response_model=UserReadDTO)
-def approve_user(
+async def approve_user(
     user_id: int,
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
@@ -189,7 +190,28 @@ def approve_user(
     db_user = session.get(User, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
-
+    user_data = {"sub": db_user.email, "id": db_user.id}
+    token = create_access_token(
+        user_data, expires_delta=timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    try:
+        async with AsyncSMTPClient(
+            host=config.SMTP_HOST,
+            port=config.SMTP_PORT,
+            username=config.SMTP_USERNAME,
+            password=config.SMTP_PASSWORD,
+        ) as smtp_client:
+            subject = "Your Application Has Been Approved"
+            body = f"Hello {db_user.first_name},\n\nYour application has been approved.\nPlease set your password using this Link:\nhttp://localhost:5173/#/set-password?token={token} \n\nBest regards,\nCorporate Culture Community Team"
+            a = await smtp_client.send_message(
+                subject=subject,
+                body=body,
+                to_addrs=db_user.email,
+            )
+            print(f"Email sent: {a}")
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send email") from e
     db_user.role = RoleEnum.USER.value
 
     try:
@@ -208,7 +230,10 @@ def set_password(
     session: Session = Depends(get_session),
 ):
     try:
-        decoded_email = base64.urlsafe_b64decode(data.token).decode()
+        payload = jwt.decode(
+            data.token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM]
+        )
+        decoded_email: str = payload.get("sub")
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid token")
 
