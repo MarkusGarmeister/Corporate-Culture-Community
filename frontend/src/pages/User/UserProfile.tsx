@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   TextField,
@@ -70,9 +70,13 @@ export function UserProfilePage() {
     //TODO call backend
     setIsEditing(false);
   };
-  const { values, errors, handleChange, handleSubmit } =
+  const { values, errors, handleChange, handleSubmit, setValues } =
     useFormValidation<User>(user, validationRules, handleSave);
-
+  useEffect(() => {
+    if (user && setValues) {
+      setValues(user);
+    }
+  }, [user, setValues]);
   // user statistics caculated from locations and ratings
   const userLocations =
     locations?.filter((l) => l.created_by === user?.id) || [];
@@ -194,64 +198,75 @@ export function UserProfilePage() {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
+                      name="first_name"
                       label="First Name"
-                      value={user?.first_name}
+                      value={values?.first_name || ""}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
+                      name="last_name"
                       label="Last Name"
-                      value={user?.last_name}
+                      value={values?.last_name || ""}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
+                      name="email"
                       label="Email"
                       type="email"
-                      value={user?.email}
+                      value={values?.email || ""}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
+                      name="city"
                       label="City"
-                      value={user.city}
+                      value={values?.city || ""}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
+                      name="company"
                       label="Company"
-                      value={user.company}
+                      value={values?.company || ""}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
+                      name="work_position"
                       label="Work Position"
-                      value={user?.work_position}
+                      value={values?.work_position || ""}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <DepartmentDropDown
-                      value={user?.department || ""}
-                      onChange={handleChange}
+                      value={values?.department || ""}
+                      onChange={(value) =>
+                        handleChange({
+                          target: { name: "department", value },
+                        })
+                      }
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
+                      name="linkedin_url"
                       label="LinkedIn URL"
                       type="url"
-                      value={user.linkedInUrl}
+                      value={values?.linkedin_url || ""}
                       onChange={handleChange}
                     />
                   </Grid>

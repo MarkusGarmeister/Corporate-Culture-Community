@@ -69,5 +69,6 @@ export function useFormValidation<T extends Record<string, string>>(
     handleChange,
     handleSubmit,
     validateField,
+    setValues,
   };
 }
