@@ -1,8 +1,22 @@
 import simpleRestProvider from "ra-data-simple-rest";
+import { fetchUtils } from "react-admin";
 
-const API_URL = process.env.REACT_APP_API_URL || "https://joinculture.co/";
+const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
 
-export const dataProvider = simpleRestProvider(API_URL);
+const getToken = () => localStorage.getItem("token");
+
+const httpClient = (url: string, options: fetchUtils.Options = {}) => {
+  const headers = new Headers(
+    options.headers || { Accept: "application/json" },
+  );
+  const token = getToken();
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  return fetchUtils.fetchJson(url, { ...options, headers });
+};
+export const dataProvider = simpleRestProvider(API_URL, httpClient);
 
 // import { DataProvider } from "react-admin";
 // import axios from "axios";

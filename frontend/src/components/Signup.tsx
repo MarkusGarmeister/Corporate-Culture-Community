@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import { useFormValidation } from "../hooks/useFormValidation";
 
-const API_URL = process.env.REACT_APP_API_URL || "https://joinculture.co/";
+const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
 
 const departments = [
   {
@@ -116,7 +116,7 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
         department: formValues.department,
       };
 
-      const response = await axios.post(`${API_URL}users/`, backendData);
+      const response = await axios.post(`${API_URL}/users/`, backendData);
       console.log("Signup successful:", response.data);
 
       onSignup();

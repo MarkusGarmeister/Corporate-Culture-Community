@@ -1,12 +1,12 @@
 import { AuthProvider } from "react-admin";
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL || "https://joinculture.co/";
+const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
 
 export const authProvider: AuthProvider = {
   login: async ({ username, password }) => {
     try {
-      const response = await axios.post(`${API_URL}users/login`, {
+      const response = await axios.post(`${API_URL}/users/login`, {
         email: username,
         password,
       });
@@ -43,6 +43,12 @@ export const authProvider: AuthProvider = {
       return Promise.reject();
     }
     const payload = JSON.parse(atob(token.split(".")[1]));
-    return { id: payload.id };
+
+    const response = await axios.get(`${API_URL}/users/${payload.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
   },
 };
