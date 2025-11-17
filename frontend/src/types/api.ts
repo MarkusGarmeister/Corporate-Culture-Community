@@ -58,6 +58,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/users/{user_id}/approve": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Approve User */
+    post: operations["approve_user_users__user_id__approve_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/update_password": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Update Password */
+    post: operations["update_password_users_update_password_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/locations/": {
     parameters: {
       query?: never;
@@ -394,37 +428,6 @@ export interface components {
       /** Token Type */
       token_type: string;
     };
-    /** User */
-    User: {
-      /** Id */
-      id?: number | null;
-      /** First Name */
-      first_name: string;
-      /** Last Name */
-      last_name: string;
-      /** Email */
-      email: string;
-      /** Password */
-      password: string;
-      /** City */
-      city: string | null;
-      /** Company */
-      company: string | null;
-      /** Work Position */
-      work_position: string | null;
-      /** Linkedin Url */
-      linkedin_url: string | null;
-      /**
-       * Created At
-       * Format: date-time
-       */
-      created_at?: string;
-      /**
-       * Role
-       * @default pending
-       */
-      role: string;
-    };
     /** UserCreateDTO */
     UserCreateDTO: {
       /** First Name */
@@ -433,16 +436,16 @@ export interface components {
       last_name: string;
       /** Email */
       email: string;
-      /** Password */
-      password: string;
       /** City */
-      city?: string | null;
+      city: string;
       /** Company */
-      company?: string | null;
+      company: string;
       /** Work Position */
-      work_position?: string | null;
+      work_position: string;
       /** Linkedin Url */
-      linkedin_url?: string | null;
+      linkedin_url: string;
+      /** Department */
+      department: string;
     };
     /** UserReadDTO */
     UserReadDTO: {
@@ -457,13 +460,15 @@ export interface components {
       /** Role */
       role: string;
       /** City */
-      city?: string | null;
+      city: string;
       /** Company */
-      company?: string | null;
+      company: string;
       /** Work Position */
-      work_position?: string | null;
+      work_position: string;
       /** Linkedin Url */
-      linkedin_url?: string | null;
+      linkedin_url: string;
+      /** Department */
+      department: string;
     };
     /** UserUpdateDTO */
     UserUpdateDTO: {
@@ -481,6 +486,10 @@ export interface components {
       work_position?: string | null;
       /** Linkedin Url */
       linkedin_url?: string | null;
+      /** Department */
+      department?: string | null;
+      /** Role */
+      role?: string | null;
     };
     /** ValidationError */
     ValidationError: {
@@ -502,7 +511,9 @@ export type $defs = Record<string, never>;
 export interface operations {
   list_users_users__get: {
     parameters: {
-      query?: never;
+      query?: {
+        pending?: boolean | null;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -515,7 +526,16 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["User"][];
+          "application/json": components["schemas"]["UserReadDTO"][];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -539,7 +559,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["User"];
+          "application/json": components["schemas"]["UserReadDTO"];
         };
       };
       /** @description Validation Error */
@@ -570,7 +590,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["User"];
+          "application/json": components["schemas"]["UserReadDTO"];
         };
       };
       /** @description Validation Error */
@@ -605,7 +625,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["User"];
+          "application/json": components["schemas"]["UserReadDTO"];
         };
       };
       /** @description Validation Error */
@@ -668,6 +688,68 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["Token"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  approve_user_users__user_id__approve_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        user_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserReadDTO"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  update_password_users_update_password_post: {
+    parameters: {
+      query: {
+        new_password: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserReadDTO"];
         };
       };
       /** @description Validation Error */
