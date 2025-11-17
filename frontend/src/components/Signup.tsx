@@ -20,6 +20,7 @@ import {
   Link,
 } from "@mui/material";
 import { useFormValidation } from "../hooks/useFormValidation";
+import { DepartmentDropDown } from "./Departments";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
 
@@ -274,37 +275,16 @@ export const Signup = ({ open, onClose, onSignup }: SignupPopup) => {
 
             {/* Departments */}
             <Grid item xs={12}>
-              <FormControl fullWidth required error={!!errors.department}>
-                <InputLabel id="department-label">Department</InputLabel>
-                <Select
-                  labelId="department-label"
-                  id="department"
-                  name="department"
-                  value={values.department}
-                  onChange={handleChange}
-                  label="Departments"
-                >
-                  {departments.map((dept) => (
-                    <MenuItem key={dept.value} value={dept.value}>
-                      <Box>
-                        <Typography variant="body1">{dept.label}</Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {dept.description}
-                        </Typography>
-                      </Box>
-                    </MenuItem>
-                  ))}
-                </Select>
-                {errors.department && (
-                  <Typography
-                    variant="caption"
-                    color="error"
-                    sx={{ mt: 0.5, ml: 1.75 }}
-                  >
-                    {errors.department}
-                  </Typography>
-                )}
-              </FormControl>
+              <DepartmentDropDown
+                value={values.department}
+                onChange={(value) =>
+                  handleChange({
+                    target: { name: "department", value },
+                  })
+                }
+                error={errors.department}
+                required
+              />
             </Grid>
 
             {/* LinkedIn URL */}
