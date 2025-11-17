@@ -26,16 +26,16 @@ import {
   Save,
   X,
 } from "lucide-react";
-import { colors } from "../theme";
-import { User } from "../types/index";
+import { colors } from "../../theme";
+import { User } from "../../types/index";
 import { useGetOne, useGetList } from "react-admin";
 import { useNavigate, useParams } from "react-router-dom";
-import { Header } from "../components/Header";
-import { BackToMarket } from "../components/BackToMarket";
-import { DepartmentDropDown } from "../components/Departments";
-import { validationRules } from "../utils/validation";
-import { useFormValidation } from "../hooks/useFormValidation";
-import { Statistics } from "../components/Statistics";
+import { Header } from "../../components/Header";
+import { BackToMarket } from "../../components/BackToMarket";
+import { DepartmentDropDown } from "../../components/Departments";
+import { validationRules } from "../../utils/validation";
+import { useFormValidation } from "../../hooks/useFormValidation";
+import { Statistics } from "../../components/Statistics";
 
 // renders location and experience tab
 function LocExpTab(props: {

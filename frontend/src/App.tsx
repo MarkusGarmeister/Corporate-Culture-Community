@@ -16,7 +16,7 @@ import { Welcome } from "./pages/Welcome";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { Imprint } from "./pages/Imprint";
 import { UserList } from "./pages/User/index.tsx";
-import { UserProfilePage } from "./pages/UserProfile.tsx";
+import { UserProfilePage } from "./pages/User/UserProfile.tsx";
 
 export const App = () => (
   <Admin
