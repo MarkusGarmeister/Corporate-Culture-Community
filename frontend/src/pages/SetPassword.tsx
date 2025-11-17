@@ -18,7 +18,7 @@ import { passwordRules, passwordRequirements } from "../utils/validation";
 import { useFormValidation } from "../hooks/useFormValidation";
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co";
+const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
 
 interface SetPasswordForm {
   password: string;
@@ -66,7 +66,7 @@ export const SetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/users/set_password/`, {
+      const response = await axios.post(`${API_URL}users/set_password/`, {
         token,
         password: formValues.password,
       });

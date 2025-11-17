@@ -1,7 +1,7 @@
 import simpleRestProvider from "ra-data-simple-rest";
 import { fetchUtils } from "react-admin";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co";
+const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
 
 const getToken = () => localStorage.getItem("token");
 
