@@ -7,10 +7,17 @@ import {
   CardContent,
   Button,
 } from "@mui/material";
-import { MessageSquare, BookOpen, MapPin, Briefcase } from "lucide-react";
+import {
+  MessageSquare,
+  BookOpen,
+  MapPin,
+  Briefcase,
+  Calendar,
+} from "lucide-react";
 import { useGetIdentity, useGetOne, useGetList } from "react-admin";
 import { useNavigate } from "react-router";
 import { Footer } from "../components/Footer";
+import { Statistics } from "../components/Statistics";
 
 // Mock data for departments distribution
 const departmentData = [
@@ -241,6 +248,25 @@ export const Welcome = () => {
               </Typography>
             </Box>
           </Box>
+          <Statistics
+            statistics={[
+              {
+                label: "Venues Added",
+                value: 32,
+                icon: <MapPin size={20} />,
+              },
+              {
+                label: "Experiences Shared",
+                value: 48,
+                icon: <MessageSquare size={20} />,
+              },
+              {
+                label: "Events This Month",
+                value: 6,
+                icon: <Calendar size={20} />,
+              },
+            ]}
+          />
         </Box>
 
         {/* Latest News Section */}
