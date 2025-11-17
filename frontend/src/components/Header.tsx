@@ -1,7 +1,7 @@
 import { Toolbar, Box, Typography, Button } from "@mui/material";
 import { LogOut, User } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
-import { useGetIdentity, useGetOne } from "react-admin";
+import { useGetIdentity, useGetOne, useLogout } from "react-admin";
 import logo from "../assets/ccc-logo.png";
 
 export const Header = ({ backButton }: { backButton?: React.ReactNode }) => {
@@ -9,6 +9,7 @@ export const Header = ({ backButton }: { backButton?: React.ReactNode }) => {
   const { data: user } = useGetOne("users", { id: userId?.id });
   const location = useLocation();
   const navigate = useNavigate();
+  const logout = useLogout();
   const onProfilePage =
     location.pathname.includes("/users/") &&
     location.pathname.includes("/show");
@@ -57,6 +58,7 @@ export const Header = ({ backButton }: { backButton?: React.ReactNode }) => {
           variant="outlined"
           size="small"
           startIcon={<LogOut size={20} />}
+          onClick={() => logout()}
         >
           Logout
         </Button>
