@@ -4,13 +4,18 @@ import { authProvider } from "./auth/authProvider";
 import { dataProvider } from "./dataProvider";
 import { Layout } from "./Layout";
 import { LandingPage } from "./pages/LandingPage";
-import { LocationCreate, LocationList, LocationShow } from "./pages/Location";
+import {
+  LocationCreate,
+  LocationList,
+  LocationShow,
+} from "./pages/location/index.tsx";
 import { theme } from "./theme";
 import { SignupCompleted } from "./pages/SignupCompleted";
 import { NotFound } from "./pages/404NotFound";
 import { Welcome } from "./pages/Welcome";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { Imprint } from "./pages/Imprint";
+import { UserList } from "./pages/User/index.tsx";
 
 export const App = () => (
   <Admin
@@ -27,6 +32,7 @@ export const App = () => (
       show={LocationShow}
       create={LocationCreate}
     />
+    <Resource name="users" list={UserList} />
     <CustomRoutes noLayout>
       <Route path="/" element={<LandingPage />} />
       <Route path="/signup/success" element={<SignupCompleted />} />
