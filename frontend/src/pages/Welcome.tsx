@@ -5,6 +5,7 @@ import {
   Grid,
   Card,
   CardContent,
+  Button,
 } from "@mui/material";
 import { MessageSquare, BookOpen, MapPin, Briefcase } from "lucide-react";
 import { useGetIdentity, useGetOne, useGetList } from "react-admin";
@@ -88,13 +89,34 @@ export const Welcome = () => {
     <Box sx={{ bgcolor: "#FAFAFA", minHeight: "100vh" }}>
       <Container maxWidth="xl" sx={{ pt: 6, pb: 8 }}>
         {/* Welcome Header */}
-        <Box sx={{ mb: 6 }}>
-          <Typography variant="h3" sx={{ fontWeight: 600, mb: 1 }}>
-            Welcome back, {user?.first_name}! 👋
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Here&apos;s what&apos;s happening in your community today
-          </Typography>
+        <Box
+          sx={{
+            mb: 6,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <Box>
+            <Typography variant="h3" sx={{ fontWeight: 600, mb: 1 }}>
+              Welcome back, {user?.first_name}! 👋
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Here&apos;s what&apos;s happening in your community today
+            </Typography>
+          </Box>
+          {user?.role === "admin" && (
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#4A1D8C",
+                "&:hover": { bgcolor: "#6B2FB8" },
+              }}
+              onClick={() => navigate("/users")}
+            >
+              Manage Users
+            </Button>
+          )}
         </Box>
 
         {/* Statistics Section */}
