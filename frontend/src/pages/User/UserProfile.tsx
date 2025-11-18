@@ -378,7 +378,7 @@ export function UserProfilePage() {
                                     color="#facc15"
                                   />
                                   <Typography variant="body2">
-                                    {venue.final_rating.toFixed(1)}
+                                    {venue.final_rating ? venue.final_rating.toFixed(1) : "N/A"}
                                   </Typography>
                                 </Box>
                               </Box>

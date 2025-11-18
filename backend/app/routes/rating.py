@@ -53,7 +53,7 @@ def create_rating(
     return db_rating
 
 
-@router.get("/", response_model=List[Rating])
+@router.get("", response_model=List[Rating])
 def list_ratings(session: Session = Depends(get_session)):
     result = session.exec(select(Rating))
     return result.all()

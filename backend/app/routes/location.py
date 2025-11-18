@@ -46,7 +46,7 @@ def create_location(
     return db_location
 
 
-@router.get("/", response_model=List[LocationReadDTO])
+@router.get("", response_model=List[LocationReadDTO])
 def read_locations(
     response: Response,
     skip: int = 0,

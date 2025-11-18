@@ -18,7 +18,7 @@ import { passwordRules, passwordRequirements } from "../utils/validation";
 import { useFormValidation } from "../hooks/useFormValidation";
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co/";
+const API_URL = import.meta.env.VITE_API_URL || "https://joinculture.co";
 
 interface SetPasswordForm {
   password: string;
