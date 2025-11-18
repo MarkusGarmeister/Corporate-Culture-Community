@@ -11,7 +11,8 @@ from app.routes.dto.user import (
     LoginDTO,
     SetPasswordDTO,
 )
-import traceback
+import logging
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from app.auth import (
     authenticate_user,
@@ -30,6 +31,8 @@ from jose import JWTError, jwt
 
 config = Config()
 router = APIRouter()
+
+logger = logging.getLogger(__name__)
 
 
 @router.post("/", response_model=UserReadDTO, status_code=status.HTTP_201_CREATED)
@@ -50,10 +53,19 @@ async def create_user(user: UserCreateDTO, session: Session = Depends(get_sessio
                 body=body,
                 to_addrs=user.email,
             )
-            print(f"Email sent: {a}")
+            logger.info(f"Registration email sent successfully to {user.email}")
     except Exception as e:
-        print(f"Error sending email: {e}")
-        raise HTTPException(status_code=500, detail="Failed to send email") from e
+
+        logger.error(
+            "Failed to send registration email",
+            exc_info=True,
+            extra={"user_email": user.email, "error_type": type(e).__name__},
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to send confirmation email. Please contact support.",
+        )
     hashed_password = get_password_hash(random_password)
 
     try:
@@ -69,19 +81,63 @@ async def create_user(user: UserCreateDTO, session: Session = Depends(get_sessio
             department=user.department,
         )
     except Exception as e:
-        print(f"Error creating user object: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
+        logger.error(
+            "Failed to create user object",
+            exc_info=True,
+            extra={"error_type": type(e).__name__},
+        )
+        raise HTTPException(status_code=400, detail="Invalid user data provided.")
     try:
         session.add(db_user)
         session.commit()
         session.refresh(db_user)
         return db_user
-    except Exception as e:
-        print(f"Error creating user:")
-        print(f"Exception type: {type(e).__name__}")
-        traceback.print_exc()
+
+    except IntegrityError as e:
         session.rollback()
-        raise HTTPException(status_code=400, detail=str(e))
+        logger.warning(
+            "Database integrity error during user creation",
+            exc_info=True,
+            extra={
+                "user_email": user.email,
+                "error_detail": str(e.orig) if hasattr(e, "orig") else str(e),
+            },
+        )
+
+        error_str = str(e).lower()
+        if "unique constraint" in error_str and "email" in error_str:
+            raise HTTPException(
+                status_code=400,
+                detail="An account with this email address already exists.",
+            )
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="Unable to create user account due to data conflict.",
+            )
+
+    except SQLAlchemyError as e:
+        session.rollback()
+        logger.error(
+            "Database error during user creation",
+            exc_info=True,
+            extra={"user_email": user.email, "error_type": type(e).__name__},
+        )
+        raise HTTPException(
+            status_code=500, detail="A database error occurred. Please try again later."
+        )
+
+    except Exception as e:
+        session.rollback()
+        logger.error(
+            "Unexpected error during user creation",
+            exc_info=True,
+            extra={"user_email": user.email, "error_type": type(e).__name__},
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred. Please try again later.",
+        )
 
 
 @router.get("", response_model=List[UserReadDTO])
@@ -150,9 +206,40 @@ def update_user(
         session.commit()
         session.refresh(db_user)
         return db_user
+
+    except IntegrityError as e:
+        session.rollback()
+        logger.warning(
+            f"Database integrity error updating user {user_id}",
+            exc_info=True,
+            extra={"user_id": user_id},
+        )
+        raise HTTPException(
+            status_code=400, detail="Unable to update user due to data conflict."
+        )
+
+    except SQLAlchemyError as e:
+        session.rollback()
+        logger.error(
+            f"Database error updating user {user_id}",
+            exc_info=True,
+            extra={"user_id": user_id},
+        )
+        raise HTTPException(
+            status_code=500, detail="A database error occurred. Please try again later."
+        )
+
     except Exception as e:
         session.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(
+            f"Unexpected error updating user {user_id}",
+            exc_info=True,
+            extra={"user_id": user_id},
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred. Please try again later.",
+        )
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -210,10 +297,21 @@ async def approve_user(
                 body=body,
                 to_addrs=db_user.email,
             )
-            print(f"Email sent: {a}")
+            logger.info(f"Approval email sent successfully to {db_user.email}")
     except Exception as e:
-        print(f"Error sending email: {e}")
-        raise HTTPException(status_code=500, detail="Failed to send email") from e
+        logger.error(
+            "Failed to send approval email",
+            exc_info=True,
+            extra={
+                "user_id": user_id,
+                "user_email": db_user.email,
+                "error_type": type(e).__name__,
+            },
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="User approved but failed to send notification email. Please contact the user directly.",
+        )
     db_user.role = RoleEnum.USER.value
 
     try:
@@ -221,9 +319,30 @@ async def approve_user(
         session.commit()
         session.refresh(db_user)
         return db_user
+
+    except SQLAlchemyError as e:
+        session.rollback()
+        logger.error(
+            f"Database error approving user {user_id}",
+            exc_info=True,
+            extra={"user_id": user_id},
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to update user approval status. Please try again.",
+        )
+
     except Exception as e:
         session.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(
+            f"Unexpected error approving user {user_id}",
+            exc_info=True,
+            extra={"user_id": user_id},
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred. Please try again later.",
+        )
 
 
 @router.post("/set_password", response_model=UserReadDTO)
@@ -245,14 +364,35 @@ def set_password(
 
     hashed_password = get_password_hash(data.password)
     user.password = hashed_password
+
     try:
         session.add(user)
         session.commit()
         session.refresh(user)
         return user
+
+    except SQLAlchemyError as e:
+        session.rollback()
+        logger.error(
+            f"Database error setting password for user {user.id}",
+            exc_info=True,
+            extra={"user_id": user.id},
+        )
+        raise HTTPException(
+            status_code=500, detail="Failed to update password. Please try again."
+        )
+
     except Exception as e:
         session.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(
+            f"Unexpected error setting password for user {user.id}",
+            exc_info=True,
+            extra={"user_id": user.id},
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred. Please try again later.",
+        )
 
 
 @router.post("/update_password", response_model=UserReadDTO)
@@ -263,11 +403,31 @@ def update_password(
 ):
     hashed_password = get_password_hash(new_password)
     current_user.password = hashed_password
+
     try:
         session.add(current_user)
         session.commit()
         session.refresh(current_user)
         return current_user
+
+    except SQLAlchemyError as e:
+        session.rollback()
+        logger.error(
+            f"Database error updating password for user {current_user.id}",
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=500, detail="Failed to update password. Please try again."
+        )
+
     except Exception as e:
         session.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(
+            f"Unexpected error updating password for user {current_user.id}",
+            exc_info=True,
+            extra={"user_id": current_user.id},
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred. Please try again later.",
+        )
