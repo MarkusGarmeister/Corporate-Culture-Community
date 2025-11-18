@@ -66,11 +66,11 @@ export const SetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}users/set_password/`, {
+      const response = await axios.post(`${API_URL}/users/set_password`, {
         token,
         password: formValues.password,
       });
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       setMatchPasswordError(error);
     } finally {

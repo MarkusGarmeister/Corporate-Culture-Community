@@ -165,7 +165,9 @@ def delete_user(user_id: int, session: Session = Depends(get_session)):
 
 
 @router.post("/login")
-def get_access_token(login_data: LoginDTO, session: Session = Depends(get_session)) -> Token:
+def get_access_token(
+    login_data: LoginDTO, session: Session = Depends(get_session)
+) -> Token:
     user = authenticate_user(login_data.email, login_data.password, session)
     if not user:
         raise HTTPException(status_code=401, detail="Incorrect email or password")
@@ -202,7 +204,7 @@ async def approve_user(
             password=config.SMTP_PASSWORD,
         ) as smtp_client:
             subject = "Your Application Has Been Approved"
-            body = f"Hello {db_user.first_name},\n\nYour application has been approved.\nPlease set your password using this Link:\nhttp://localhost:5173/#/set-password?token={token} \n\nBest regards,\nCorporate Culture Community Team"
+            body = f"Hello {db_user.first_name},\n\nYour application has been approved.\nPlease set your password using this Link:\nhttps://joinculture.co/#/set-password?token={token} \n\nBest regards,\nCorporate Culture Community Team"
             a = await smtp_client.send_message(
                 subject=subject,
                 body=body,
