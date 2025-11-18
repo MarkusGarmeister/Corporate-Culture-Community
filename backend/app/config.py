@@ -30,3 +30,13 @@ class Config:
     SMTP_USERNAME: str = os.getenv("SMTP_USERNAME", "")
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
     FROM_EMAIL: str = os.getenv("FROM_EMAIL", "")
+
+    def validate(self):
+        errors = []
+        if not self.JWT_SECRET_KEY:
+            errors.append("JWT_SECRET key is not set.")
+        elif len(self.JWT_SECRET_KEY) < 32:
+            errors.append("JWT_SECRET key must be at least 32 characters long.")
+
+        if errors:
+            raise ValueError("Configuration errors: " + "; ".join(errors))

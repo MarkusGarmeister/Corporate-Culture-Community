@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-
+from app.config import Config
 
 from app.routes.user import router as user_router
 from app.routes.location import router as location_router
@@ -9,6 +9,10 @@ from app.routes.rating import router as rating_router
 from app.routes.labels import router as labels_router
 
 app = FastAPI()
+
+# checking JWT_SECRET_KEY
+config = Config()
+config.validate()
 
 # Configure CORS
 app.add_middleware(
