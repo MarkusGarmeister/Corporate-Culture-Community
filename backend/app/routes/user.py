@@ -84,7 +84,7 @@ async def create_user(user: UserCreateDTO, session: Session = Depends(get_sessio
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.get("/", response_model=List[UserReadDTO])
+@router.get("", response_model=List[UserReadDTO])
 def list_users(
     response: Response,
     session: Session = Depends(get_session),
@@ -165,7 +165,7 @@ def delete_user(user_id: int, session: Session = Depends(get_session)):
 
 
 @router.post("/login")
-def get_access_token(login_data: LoginDTO, session: SessionDep) -> Token:
+def get_access_token(login_data: LoginDTO, session: Session = Depends(get_session)) -> Token:
     user = authenticate_user(login_data.email, login_data.password, session)
     if not user:
         raise HTTPException(status_code=401, detail="Incorrect email or password")
