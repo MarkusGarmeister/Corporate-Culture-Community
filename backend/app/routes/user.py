@@ -144,8 +144,14 @@ async def create_user(user: UserCreateDTO, session: Session = Depends(get_sessio
 def list_users(
     response: Response,
     session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
     pending: Optional[bool] = Query(None),
 ):
+    if current_user.role != RoleEnum.ADMIN.value:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You don't have permission to access this resource.",
+        )
     if pending is not None and pending:
         users_pending = session.exec(
             select(User).where(User.role == RoleEnum.PENDING.value)
