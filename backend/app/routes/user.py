@@ -1,6 +1,6 @@
 from typing import List, Optional
 from app.models.data_models import RoleEnum
-from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
+from fastapi import APIRouter, Depends, HTTPException, Query, status, Response, Request
 from sqlmodel import select, Session
 from app.models import User
 from app.routes.dto.user import (
@@ -28,17 +28,20 @@ from datetime import timedelta
 from app.config import Config
 from .__init__ import get_session
 from app.service import AsyncSMTPClient
-from jose import JWTError, jwt
-
+from app.utils.limiter import limiter
 
 config = Config()
 router = APIRouter()
+
 
 logger = logging.getLogger(__name__)
 
 
 @router.post("/", response_model=UserReadDTO, status_code=status.HTTP_201_CREATED)
-async def create_user(user: UserCreateDTO, session: Session = Depends(get_session)):
+@limiter.limit("3/hour")
+async def create_user(
+    request: Request, user: UserCreateDTO, session: Session = Depends(get_session)
+):
 
     random_password = generate_random_password(16)
     try:
@@ -316,8 +319,9 @@ def delete_user(
 
 
 @router.post("/login")
+@limiter.limit("5/minute")
 def get_access_token(
-    login_data: LoginDTO, session: Session = Depends(get_session)
+    request: Request, login_data: LoginDTO, session: Session = Depends(get_session)
 ) -> Token:
     user = authenticate_user(login_data.email, login_data.password, session)
     if not user:
