@@ -12,6 +12,7 @@ from sqlalchemy.orm import selectinload
 
 from app.auth import get_current_user
 from .__init__ import get_session
+from app.utils.sanitization import sanitize_string
 
 router = APIRouter()
 
@@ -57,6 +58,8 @@ def read_locations(
     max_price_range: Optional[int] = Query(None),
     session: Session = Depends(get_session),
 ):
+    if city:
+        city = sanitize_string(city, field_name="city", max_length=50)
     query = select(Location).options(selectinload(Location.labels))
 
     if status:
