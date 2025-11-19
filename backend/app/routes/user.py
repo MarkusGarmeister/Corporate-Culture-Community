@@ -20,6 +20,7 @@ from app.auth import (
     get_current_user,
     get_password_hash,
     generate_random_password,
+    is_admin_user,
 )
 from app.routes import SessionDep
 from datetime import timedelta
@@ -182,7 +183,17 @@ def update_user(
     user_id: int,
     updated_user: UserUpdateDTO,
     session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
 ):
+    if current_user.id != user_id and current_user.role != RoleEnum.ADMIN.value:
+        logger.warning(
+            f"User {current_user.id} attempted to update user {user_id} without permission",
+            extra={"current_user_id": current_user.id, "target_user_id": user_id},
+        )
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You don't have permission to update this user.",
+        )
     db_user = session.get(User, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -202,6 +213,15 @@ def update_user(
     if updated_user.department is not None:
         db_user.department = updated_user.department
     if updated_user.role is not None:
+        if not is_admin_user(current_user):
+            logger.warning(
+                f"User {current_user.id} attempted to change role of user {user_id} without permission",
+                extra={"current_user_id": current_user.id, "target_user_id": user_id},
+            )
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You don't have permission to change user roles.",
+            )
         db_user.role = updated_user.role
     if updated_user.password is not None:
         hashed_password = get_password_hash(updated_user.password)
@@ -249,10 +269,36 @@ def update_user(
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(user_id: int, session: Session = Depends(get_session)):
+def delete_user(
+    user_id: int,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    if current_user.id != user_id and current_user.role != RoleEnum.ADMIN.value:
+        logger.warning(
+            f"User {current_user.id} attempted to delete user {user_id} without permission",
+            extra={"current_user_id": current_user.id, "target_user_id": user_id},
+        )
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You don't have permission to delete this user.",
+        )
     user = session.get(User, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+
+    is_self_deletion = current_user.id == user_id
+    logger.warning(
+        f"User account deleted: {'self-deletion' if is_self_deletion else 'admin deletion'}",
+        extra={
+            "event_type": "USER_DELETED",
+            "deleted_user_id": user.id,
+            "deleted_user_email": user.email,
+            "deleted_user_role": user.role,
+            "deleted_by_user_id": current_user.id,
+            "is_self_deletion": is_self_deletion,
+        },
+    )
     session.delete(user)
     session.commit()
 

@@ -7,6 +7,9 @@ from app.routes.dto import RatingCreateDto, RatingUpdateDto
 from sqlalchemy.orm import selectinload
 from app.auth import get_current_user
 from .__init__ import get_session
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -64,10 +67,21 @@ def update_rating(
     rating_id: int,
     updated_rating: RatingUpdateDto,
     session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
 ):
+
     db_rating = session.get(Rating, rating_id)
     if not db_rating:
         raise HTTPException(status_code=404, detail="Rating not found")
+
+    if db_rating.user_id != current_user.id:
+        logger.warning(
+            f"User {current_user.id} attempted to update rating {rating_id} without permission",
+            extra={"current_user_id": current_user.id, "rating_id": rating_id},
+        )
+        raise HTTPException(
+            status_code=403, detail="Not authorized to update this rating"
+        )
 
     db_rating.rating = updated_rating.rating
     db_rating.comment = updated_rating.comment
