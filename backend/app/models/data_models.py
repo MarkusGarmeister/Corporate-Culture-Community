@@ -27,6 +27,7 @@ class User(SQLModel, table=True):
     department: str
     created_at: datetime = Field(default_factory=datetime.now)
     role: str = Field(default=RoleEnum.PENDING.value)
+    password_reset_token: Optional[str] = Field(default=None)
 
     # Relationships
     locations: List["Location"] = Relationship(back_populates="creator")

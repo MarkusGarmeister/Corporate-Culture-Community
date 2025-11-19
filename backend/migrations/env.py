@@ -8,6 +8,7 @@ from alembic import context
 
 from sqlmodel import SQLModel
 from app.models import User, Label, Location, Rating, LocationLabel
+from app.config import Config
 
 
 # this is the Alembic Config object, which provides
@@ -15,15 +16,13 @@ from app.models import User, Label, Location, Rating, LocationLabel
 
 config = context.config
 
-# Override sqlalchemy.url from environment variable if present
-db_url = os.getenv("DATABASE_URL")
+# Use app Config to get DATABASE_URL (handles .env loading)
+app_config = Config()
+db_url = app_config.DATABASE_URL
 if db_url:
-    # Replace async drivers with sync drivers for migrations
-    # Alembic requires synchronous database drivers
-    db_url = db_url.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
-    # Also handle the old postgres:// format from Fly.io
-    db_url = db_url.replace("postgres://", "postgresql+psycopg2://")
     config.set_main_option("sqlalchemy.url", db_url)
+else:
+    raise ValueError("DATABASE_URL is not configured. Please set it in your .env file or environment variables.")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

@@ -12,6 +12,7 @@ from app.routes.dto.user import (
     SetPasswordDTO,
 )
 import logging
+import secrets
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from app.auth import (
@@ -354,10 +355,10 @@ async def approve_user(
     db_user = session.get(User, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
-    user_data = {"sub": db_user.email, "id": db_user.id}
-    token = create_access_token(
-        user_data, expires_delta=timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
-    )
+
+    reset_token = secrets.token_urlsafe(32)
+    db_user.password_reset_token = reset_token
+    token = reset_token
     try:
         async with AsyncSMTPClient(
             host=config.SMTP_HOST,
@@ -433,25 +434,30 @@ def set_password(
     data: SetPasswordDTO,
     session: Session = Depends(get_session),
 ):
-    try:
-        payload = jwt.decode(
-            data.token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM]
-        )
-        decoded_email: str = payload.get("sub")
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid token")
+    user = session.exec(
+        select(User).where(User.password_reset_token == data.token)
+    ).first()
 
-    user = session.exec(select(User).where(User.email == decoded_email)).first()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=400, detail="Invalid or expired token")
 
     hashed_password = get_password_hash(data.password)
     user.password = hashed_password
+
+    user.password_reset_token = None
 
     try:
         session.add(user)
         session.commit()
         session.refresh(user)
+        logger.info(
+            f"Password reset completed for user {user.id}",
+            extra={
+                "event_type": "PASSWORD_RESET_COMPLETED",
+                "user_id": user.id,
+                "user_email": user.email,
+            },
+        )
         return user
 
     except SQLAlchemyError as e:
