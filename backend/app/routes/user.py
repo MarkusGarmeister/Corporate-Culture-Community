@@ -222,7 +222,18 @@ def update_user(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="You don't have permission to change user roles.",
             )
+        old_role = db_user.role
         db_user.role = updated_user.role
+        logger.warning(
+            f"User role changed by admin",
+            extra={
+                "event_type": "USER_ROLE_CHANGED",
+                "target_user_id": user_id,
+                "changed_by_admin_id": current_user.id,
+                "old_role": old_role,
+                "new_role": updated_user.role,
+            },
+        )
     if updated_user.password is not None:
         hashed_password = get_password_hash(updated_user.password)
         db_user.password = hashed_password
@@ -309,10 +320,22 @@ def get_access_token(
 ) -> Token:
     user = authenticate_user(login_data.email, login_data.password, session)
     if not user:
+        logger.warning(
+            f"Failed login attempt for email {login_data.email}",
+            extra={"attempted_email": login_data.email},
+        )
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     user_data = {"sub": user.email, "id": user.id}
     token = create_access_token(
         user_data, expires_delta=timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    logger.info(
+        f"User {user.id} logged in successfully",
+        extra={
+            "event_type": "USER_LOGGED_IN",
+            "user_id": user.id,
+            "user_email": user.email,
+        },
     )
     return Token(access_token=token, token_type="bearer")
 
@@ -323,7 +346,7 @@ async def approve_user(
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.role != RoleEnum.ADMIN.value:
+    if not is_admin_user(current_user):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Only admin users can approve accounts",
@@ -370,6 +393,14 @@ async def approve_user(
         session.add(db_user)
         session.commit()
         session.refresh(db_user)
+        logger.info(
+            f"User {user_id} approved by admin {current_user.id}",
+            extra={
+                "event_type": "USER_APPROVED",
+                "approved_user_id": user_id,
+                "approved_by_admin_id": current_user.id,
+            },
+        )
         return db_user
 
     except SQLAlchemyError as e:
@@ -460,6 +491,14 @@ def update_password(
         session.add(current_user)
         session.commit()
         session.refresh(current_user)
+        logger.info(
+            f"Password updated for user {current_user.id}",
+            extra={
+                "event_type": "PASSWORD_CHANGED",
+                "user_id": current_user.id,
+                "user_email": current_user.email,
+            },
+        )
         return current_user
 
     except SQLAlchemyError as e:
