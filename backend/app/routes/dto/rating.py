@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, Field
+from app.utils.sanitization import sanitize_text
+from pydantic import BaseModel, Field, field_validator
 
 
 class RatingCreateDto(BaseModel):
@@ -12,6 +13,10 @@ class RatingCreateDto(BaseModel):
 
     class Config:
         orm_mode = True
+
+    @field_validator("comment")
+    def sanitize_comment(cls, input_text):
+        return sanitize_text(input_text, max_length=500)
 
 
 class RatingUpdateDto(BaseModel):

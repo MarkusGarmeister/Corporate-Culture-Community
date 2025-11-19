@@ -1,5 +1,6 @@
 from typing import Optional, List
-from pydantic import BaseModel, Field
+from app.utils.sanitization import sanitize_text
+from pydantic import BaseModel, Field, field_validator
 from app.models.data_models import Rating
 from app.routes.dto import UserReadDTO
 
@@ -20,6 +21,19 @@ class LocationCreateDTO(BaseModel):
 
     class Config:
         orm_mode = True
+
+    @field_validator(
+        "name",
+        "status",
+        "address_line_1",
+        "address_line_2",
+        "city",
+        "state",
+        "zip_code",
+        "country",
+    )
+    def sanitize_text_fields(cls, input_text):
+        return sanitize_text(input_text, max_length=100)
 
 
 class LocationUpdateDTO(BaseModel):
