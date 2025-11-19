@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel, EmailStr, HttpUrl, field_validator
+from pydantic import BaseModel, EmailStr, HttpUrl, field_validator, ValidationInfo
 from app.utils.sanitization import sanitize_text
 
 
@@ -33,6 +33,12 @@ class UserUpdateDTO(BaseModel):
     class Config:
         orm_mode = True
 
+    @field_validator(
+        "first_name", "last_name", "city", "company", "work_position", "department"
+    )
+    def sanitize_text_fields(cls, input_text, info: ValidationInfo):
+        return sanitize_text(input_text, field_name=info.field_name, max_length=100)
+
 
 class UserCreateDTO(BaseModel):
     first_name: str
@@ -50,8 +56,8 @@ class UserCreateDTO(BaseModel):
     @field_validator(
         "first_name", "last_name", "city", "company", "work_position", "department"
     )
-    def sanitize_text_fields(cls, input_text):
-        return sanitize_text(input_text, max_length=100)
+    def sanitize_text_fields(cls, input_text, info: ValidationInfo):
+        return sanitize_text(input_text, field_name=info.field_name, max_length=100)
 
 
 class Token(BaseModel):
