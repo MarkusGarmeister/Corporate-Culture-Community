@@ -10,7 +10,7 @@ from app.routes.dto.location import (
 )
 from sqlalchemy.orm import selectinload
 
-from app.auth import get_current_user
+from app.auth import get_current_user, is_admin_user
 from .__init__ import get_session
 from app.utils.sanitization import sanitize_text
 
@@ -122,7 +122,7 @@ def update_location(
     location = session.get(Location, location_id)
     if not location:
         raise HTTPException(status_code=404, detail="Location not found")
-    if location.created_by != current_user.id:
+    if location.created_by != current_user.id and not is_admin_user(current_user):
         raise HTTPException(
             status_code=403, detail="Not allowed to update this location"
         )
@@ -149,7 +149,7 @@ def delete_location(
     location = session.get(Location, location_id)
     if not location:
         raise HTTPException(status_code=404, detail="Location not found")
-    if location.created_by != current_user.id:
+    if location.created_by != current_user.id and not is_admin_user(current_user):
         raise HTTPException(
             status_code=403, detail="Not allowed to delete this location"
         )
