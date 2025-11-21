@@ -1,90 +1,151 @@
-# Corporate Culture Community
+# 🏢 Corporate Culture Community
 
-A full-stack application for building and managing corporate culture communities.
+A web application for corporate community members to share and rate locations for events like venues, catering services, and team activities. Users need admin approval before they can access the platform.
 
-## Project Structure
+**Live Demo:** https://joinculture.co
 
-```
-Corporate-Culture-Community/
-├── backend/          # FastAPI backend
-├── frontend/         # React Admin frontend
-├── docker-compose.yml
-└── README.md
-```
+---
 
-## Tech Stack
+## ✨ Features
+
+- **👥 User Management**: Registration with admin approval workflow
+- **📍 Location Sharing**: Add and discover venues, catering services, event spaces
+- **⭐ Rating System**: Rate locations from 1-5 stars with reviews
+- **🏢 Department Filtering**: Find locations by department or category
+- **🔐 Role-Based Access**: Admin, User, Ambassador, and Pending roles
+- **📊 Admin Dashboard**: Approve users, manage roles, moderate content
+- **🔍 Search & Filter**: Find locations by city, labels, and departments
+- **📧 Email Notifications**: Automated emails for registration and approval
+
+See [THREAT_MODEL.md](./THREAT_MODEL.md) for security analysis.
+
+---
+
+## 🛠️ Tech Stack
 
 ### Backend
+
 - **FastAPI** - Modern Python web framework
-- **SQLAlchemy** - ORM for database operations
-- **Pydantic** - Data validation
+- **SQLModel** - SQL databases with Python (built on SQLAlchemy + Pydantic)
 - **Alembic** - Database migrations
 - **PostgreSQL** - Primary database
+- **pwdlib** - Password hashing (Argon2)
+- **SlowAPI** - Rate limiting
+- **aiosmtplib** - Async email sending
 
 ### Frontend
-- **React Admin** - Admin UI framework
-- **React** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Build tool
 
-## Quick Start
+- **React 18** - UI library
+- **React Admin** - Admin UI framework
+- **Vite** - Build tool and dev server
+- **Material-UI** - Component library
+
+### Deployment
+
+- **Docker** - Containerization
+- **Fly.io** - Cloud hosting
+
+## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.11+
-- Node.js 18+
-- Docker & Docker Compose (optional)
 
-### Option 1: Docker (Recommended)
+- Python 3.12+
+- Node.js 22+
+- Poetry ([Installation](https://python-poetry.org/docs/#installation))
+- Docker (for PostgreSQL, optional)
+
+---
+
+### 1. Start PostgreSQL
+
+**Option A: Using Docker (Recommended)**
 
 ```bash
-# Start all services
-docker-compose up -d
-
-# Backend API: http://localhost:8000
-# Frontend: http://localhost:5173
-# API Docs: http://localhost:8000/docs
+docker run --name culture-postgres \
+  -e POSTGRES_USER=myuser \
+  -e POSTGRES_PASSWORD=mypassword \
+  -e POSTGRES_DB=culture_db \
+  -p 5432:5432 \
+  -d postgres
 ```
 
-### Option 2: Local Development
+**Option B: Use Local PostgreSQL**
 
-#### Backend Setup
+- Make sure PostgreSQL is installed and running
+- Create a database: `createdb culture_db`
+
+---
+
+### 2. Backend Setup
+
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials and SMTP settings
+
+# Install dependencies
+poetry install
+
+# Run migrations
+poetry run alembic upgrade head
+
+# Start backend server
+poetry run uvicorn main:app --reload
 ```
 
-#### Frontend Setup
+**Backend runs at:** http://localhost:8000
+**API Docs:** http://localhost:8000/docs
+
+---
+
+### 3. Frontend Setup
+
 ```bash
 cd frontend
+
+# Install dependencies
 npm install
+
+# Start development server
 npm run dev
 ```
 
-## Development
+**Frontend runs at:** http://localhost:5173
 
-### Backend
-- API runs on `http://localhost:8000`
-- Interactive docs at `http://localhost:8000/docs`
-- Alternative docs at `http://localhost:8000/redoc`
+## 🔒 Security Features
 
-### Frontend
-- Dev server runs on `http://localhost:5173`
-- Auto-reloads on file changes
+- **Authentication**: JWT-based authentication with secure password hashing (pwdlib)
+- **Authorization**: Role-based access control (Admin, User, Pending, Ambassador)
+- **Rate Limiting**:
+  - Login: 5 attempts per minute
+  - Registration: 3 attempts per hour
+- **Input Sanitization**: XSS prevention on user inputs (utils/sanitization.py)
+- **Audit Logging**: Security events tracked with timestamps and user IDs
+- **SQL Injection Protection**: SQLModel/SQLAlchemy parameterized queries
+- **HTTPS**: All connections encrypted in production
 
-## Environment Variables
+See [THREAT_MODEL_SIMPLE.md](./THREAT_MODEL_SIMPLE.md) for detailed STRIDE threat analysis.
 
-Copy `.env.example` files in both backend and frontend directories and configure as needed.
+---
 
-## Contributing
+## 📄 License
 
-1. Create a feature branch
-2. Make your changes
-3. Run tests
-4. Submit a pull request
+This project is for academic/educational purposes.
 
-## License
+---
 
-[Your License Here]
+## 👤 Author
+
+Markus Garmeister
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with [FastAPI](https://fastapi.tiangolo.com/)
+- UI powered by [React Admin](https://marmelab.com/react-admin/)
+- Database ORM: [SQLModel](https://sqlmodel.tiangolo.com/)
+- Password Hashing: [pwdlib](https://github.com/frankie567/pwdlib)
+- Rate Limiting: [SlowAPI](https://github.com/laurentS/slowapi)
