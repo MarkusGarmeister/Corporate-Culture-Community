@@ -17,6 +17,20 @@ from app.utils.sanitization import sanitize_text
 router = APIRouter()
 
 
+def apply_location_filters(
+    query, status=None, city=None, min_capacity=None, max_price_range=None
+):
+    if status:
+        query = query.where(Location.status == status)
+    if city:
+        query = query.where(Location.city == city)
+    if min_capacity:
+        query = query.where(Location.capacity >= min_capacity)
+    if max_price_range:
+        query = query.where(Location.price_range <= max_price_range)
+    return query
+
+
 @router.post("/", response_model=LocationReadDTO)
 def create_location(
     location: LocationCreateDTO,
@@ -60,27 +74,15 @@ def read_locations(
 ):
     if city:
         city = sanitize_text(city, field_name="city", max_length=50)
-    query = select(Location).options(selectinload(Location.labels))
 
-    if status:
-        query = query.where(Location.status == status)
-    if city:
-        query = query.where(Location.city == city)
-    if min_capacity:
-        query = query.where(Location.capacity >= min_capacity)
-    if max_price_range:
-        query = query.where(Location.price_range <= max_price_range)
+    query = select(Location).options(selectinload(Location.labels))
+    query = apply_location_filters(query, status, city, min_capacity, max_price_range)
 
     # Get total count
     count_query = select(func.count()).select_from(Location)
-    if status:
-        count_query = count_query.where(Location.status == status)
-    if city:
-        count_query = count_query.where(Location.city == city)
-    if min_capacity:
-        count_query = count_query.where(Location.capacity >= min_capacity)
-    if max_price_range:
-        count_query = count_query.where(Location.price_range <= max_price_range)
+    count_query = apply_location_filters(
+        count_query, status, city, min_capacity, max_price_range
+    )
 
     total = session.scalar(count_query)
 
