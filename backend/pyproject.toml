@@ -57,3 +57,6 @@ exclude = '''
   | dist
 )/
 '''
+
+[tool.pylint.messages_control]
+disable = ["C", "R","w", "not-callable", "no-self-argument"]

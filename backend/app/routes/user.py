@@ -23,7 +23,6 @@ from app.auth import (
     generate_random_password,
     is_admin_user,
 )
-from app.routes import SessionDep
 from datetime import timedelta
 from app.config import Config
 from .__init__ import get_session
@@ -53,7 +52,7 @@ async def create_user(
         ) as smtp_client:
             subject = "Thank You for Your Application"
             body = f"Hello {user.first_name},\n\nThank you for your application to the Corporate Culture Community.\n\nWe’ll review your application over the next few days and get back to you.\n\nBest regards,\nCorporate Culture Community Team"
-            a = await smtp_client.send_message(
+            await smtp_client.send_message(
                 subject=subject,
                 body=body,
                 to_addrs=user.email,
@@ -121,7 +120,7 @@ async def create_user(
                 detail="Unable to create user account due to data conflict.",
             )
 
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         session.rollback()
         logger.error(
             "Database error during user creation",
@@ -132,7 +131,7 @@ async def create_user(
             status_code=500, detail="A database error occurred. Please try again later."
         )
 
-    except Exception as e:
+    except Exception:
         session.rollback()
         logger.error(
             "Unexpected error during user creation",
@@ -248,7 +247,7 @@ def update_user(
         session.refresh(db_user)
         return db_user
 
-    except IntegrityError as e:
+    except IntegrityError:
         session.rollback()
         logger.warning(
             f"Database integrity error updating user {user_id}",
@@ -259,7 +258,7 @@ def update_user(
             status_code=400, detail="Unable to update user due to data conflict."
         )
 
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         session.rollback()
         logger.error(
             f"Database error updating user {user_id}",
@@ -270,7 +269,7 @@ def update_user(
             status_code=500, detail="A database error occurred. Please try again later."
         )
 
-    except Exception as e:
+    except Exception:
         session.rollback()
         logger.error(
             f"Unexpected error updating user {user_id}",
@@ -372,7 +371,7 @@ async def approve_user(
         ) as smtp_client:
             subject = "Your Application Has Been Approved"
             body = f"Hello {db_user.first_name},\n\nYour application has been approved.\nPlease set your password using this Link:\nhttps://joinculture.co/#/set-password?token={token} \n\nBest regards,\nCorporate Culture Community Team"
-            a = await smtp_client.send_message(
+            await smtp_client.send_message(
                 subject=subject,
                 body=body,
                 to_addrs=db_user.email,
@@ -408,7 +407,7 @@ async def approve_user(
         )
         return db_user
 
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         session.rollback()
         logger.error(
             f"Database error approving user {user_id}",
@@ -420,7 +419,7 @@ async def approve_user(
             detail="Failed to update user approval status. Please try again.",
         )
 
-    except Exception as e:
+    except Exception:
         session.rollback()
         logger.error(
             f"Unexpected error approving user {user_id}",
@@ -464,7 +463,7 @@ def set_password(
         )
         return user
 
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         session.rollback()
         logger.error(
             f"Database error setting password for user {user.id}",
@@ -475,7 +474,7 @@ def set_password(
             status_code=500, detail="Failed to update password. Please try again."
         )
 
-    except Exception as e:
+    except Exception:
         session.rollback()
         logger.error(
             f"Unexpected error setting password for user {user.id}",
@@ -511,7 +510,7 @@ def update_password(
         )
         return current_user
 
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         session.rollback()
         logger.error(
             f"Database error updating password for user {current_user.id}",
@@ -521,7 +520,7 @@ def update_password(
             status_code=500, detail="Failed to update password. Please try again."
         )
 
-    except Exception as e:
+    except Exception:
         session.rollback()
         logger.error(
             f"Unexpected error updating password for user {current_user.id}",

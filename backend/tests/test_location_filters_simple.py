@@ -49,25 +49,57 @@ def test_user_fixture(session: Session):
 def sample_locations_fixture(session: Session, test_user: User):
     """Create sample locations"""
     locations_data = [
-        {"name": "Conference Center Berlin", "city": "Berlin", "capacity": 100, "price_range": 3, "status": "active"},
-        {"name": "Event Hall Berlin", "city": "Berlin", "capacity": 200, "price_range": 4, "status": "active"},
-        {"name": "Meeting Room Munich", "city": "Munich", "capacity": 50, "price_range": 2, "status": "active"},
-        {"name": "Inactive Venue Berlin", "city": "Berlin", "capacity": 150, "price_range": 3, "status": "inactive"},
-        {"name": "Small Room Hamburg", "city": "Hamburg", "capacity": 30, "price_range": 1, "status": "active"},
+        {
+            "name": "Conference Center Berlin",
+            "city": "Berlin",
+            "capacity": 100,
+            "price_range": 3,
+            "status": "active",
+        },
+        {
+            "name": "Event Hall Berlin",
+            "city": "Berlin",
+            "capacity": 200,
+            "price_range": 4,
+            "status": "active",
+        },
+        {
+            "name": "Meeting Room Munich",
+            "city": "Munich",
+            "capacity": 50,
+            "price_range": 2,
+            "status": "active",
+        },
+        {
+            "name": "Inactive Venue Berlin",
+            "city": "Berlin",
+            "capacity": 150,
+            "price_range": 3,
+            "status": "inactive",
+        },
+        {
+            "name": "Small Room Hamburg",
+            "city": "Hamburg",
+            "capacity": 30,
+            "price_range": 1,
+            "status": "active",
+        },
     ]
 
     locations = []
     for loc_data in locations_data:
         # Add required fields
-        loc_data.update({
-            "address_line_1": "Test Address",
-            "address_line_2": "Suite 100",
-            "state": "DE",
-            "zip_code": "12345",
-            "country": "Germany",
-            "created_by": test_user.id,
-            "final_rating": 0.0,
-        })
+        loc_data.update(
+            {
+                "address_line_1": "Test Address",
+                "address_line_2": "Suite 100",
+                "state": "DE",
+                "zip_code": "12345",
+                "country": "Germany",
+                "created_by": test_user.id,
+                "final_rating": 0.0,
+            }
+        )
         location = Location(**loc_data)
         session.add(location)
         locations.append(location)
