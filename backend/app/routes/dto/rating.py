@@ -16,7 +16,7 @@ class RatingCreateDto(BaseModel):
 
     @field_validator("comment")
     def sanitize_comment(cls, input_text, info: ValidationInfo):
-        return sanitize_text(input_text, input_text=info.field_name, max_length=500)
+        return sanitize_text(input_text, field_name=info.field_name, max_length=500)
 
 
 class RatingUpdateDto(BaseModel):
@@ -30,7 +30,7 @@ class RatingUpdateDto(BaseModel):
 
     @field_validator("comment")
     def sanitize_comment(cls, input_text, info: ValidationInfo):
-        return sanitize_text(input_text, input_text=info.field_name, max_length=500)
+        return sanitize_text(input_text, field_name=info.field_name, max_length=500)
 
 
 class RatingReadDto(BaseModel):
