@@ -30,6 +30,7 @@ pwdlib = {extras = ["argon2"], version = "^0.3.0"}
 aiosmtplib = "^5.0.0"
 slowapi = "^0.1.9"
 pydantic = {extras = ["email"], version = "^2.12.4"}
+pylint = "^4.0.4"
 
 
 [tool.poetry.group.dev.dependencies]
