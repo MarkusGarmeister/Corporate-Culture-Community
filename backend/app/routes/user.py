@@ -22,6 +22,7 @@ from app.auth import (
     get_password_hash,
     generate_random_password,
     is_admin_user,
+    verify_password,
 )
 from datetime import timedelta
 from app.config import Config
@@ -322,11 +323,24 @@ def delete_user(
 def get_access_token(
     request: Request, login_data: LoginDTO, session: Session = Depends(get_session)
 ) -> Token:
-    user = authenticate_user(login_data.email, login_data.password, session)
+    user = session.exec(select(User).where(User.email == login_data.email)).first()
     if not user:
         logger.warning(
             f"Failed login attempt for email {login_data.email}",
             extra={"attempted_email": login_data.email},
+        )
+        raise HTTPException(status_code=401, detail="Incorrect email or password")
+    if user.role == RoleEnum.PENDING.value:
+        logger.warning(
+            f"Login attempt for pending user {user.id}",
+            extra={"user_id": user.id, "user_email": user.email},
+        )
+        raise HTTPException(status_code=403, detail="User account is not approved yet")
+
+    if not verify_password(user, login_data.password):
+        logger.warning(
+            f"Failed login attempt for user {user.id}",
+            extra={"user_id": user.id, "user_email": user.email},
         )
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     user_data = {"sub": user.email, "id": user.id}
