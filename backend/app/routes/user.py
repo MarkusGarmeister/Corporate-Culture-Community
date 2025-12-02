@@ -327,43 +327,18 @@ async def approve_user(
         )
     db_user.role = RoleEnum.USER.value
 
-    try:
-        session.add(db_user)
-        session.commit()
-        session.refresh(db_user)
-        logger.info(
-            f"User {user_id} approved by admin {current_user.id}",
-            extra={
-                "event_type": "USER_APPROVED",
-                "approved_user_id": user_id,
-                "approved_by_admin_id": current_user.id,
-            },
-        )
-        return db_user
-
-    except SQLAlchemyError:
-        session.rollback()
-        logger.error(
-            f"Database error approving user {user_id}",
-            exc_info=True,
-            extra={"user_id": user_id},
-        )
-        raise HTTPException(
-            status_code=500,
-            detail="Failed to update user approval status. Please try again.",
-        )
-
-    except Exception:
-        session.rollback()
-        logger.error(
-            f"Unexpected error approving user {user_id}",
-            exc_info=True,
-            extra={"user_id": user_id},
-        )
-        raise HTTPException(
-            status_code=500,
-            detail="An unexpected error occurred. Please try again later.",
-        )
+    db_user = DatabaseService.safe_commit(
+        session, db_user, operation="approve", entity_type="user"
+    )
+    logger.info(
+        f"User {user_id} approved by admin {current_user.id}",
+        extra={
+            "event_type": "USER_APPROVED",
+            "approved_user_id": user_id,
+            "approved_by_admin_id": current_user.id,
+        },
+    )
+    return db_user
 
 
 @router.post("/set_password", response_model=UserReadDTO)
