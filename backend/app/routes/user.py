@@ -381,38 +381,15 @@ def update_password(
     hashed_password = get_password_hash(new_password)
     current_user.password = hashed_password
 
-    try:
-        session.add(current_user)
-        session.commit()
-        session.refresh(current_user)
-        logger.info(
-            f"Password updated for user {current_user.id}",
-            extra={
-                "event_type": "PASSWORD_CHANGED",
-                "user_id": current_user.id,
-                "user_email": current_user.email,
-            },
-        )
-        return current_user
-
-    except SQLAlchemyError:
-        session.rollback()
-        logger.error(
-            f"Database error updating password for user {current_user.id}",
-            exc_info=True,
-        )
-        raise HTTPException(
-            status_code=500, detail="Failed to update password. Please try again."
-        )
-
-    except Exception:
-        session.rollback()
-        logger.error(
-            f"Unexpected error updating password for user {current_user.id}",
-            exc_info=True,
-            extra={"user_id": current_user.id},
-        )
-        raise HTTPException(
-            status_code=500,
-            detail="An unexpected error occurred. Please try again later.",
-        )
+    current_user = DatabaseService.safe_commit(
+        session, current_user, operation="update password", entity_type="user"
+    )
+    logger.info(
+        f"Password updated for user {current_user.id}",
+        extra={
+            "event_type": "PASSWORD_CHANGED",
+            "user_id": current_user.id,
+            "user_email": current_user.email,
+        },
+    )
+    return current_user
