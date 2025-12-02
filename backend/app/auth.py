@@ -29,7 +29,7 @@ def generate_random_password(length: int = 16) -> str:
     return "".join(password)
 
 
-def verify_password(plain_password: str, hashed_password: str):
+def verify_password(plain_password: str, hashed_password: str) -> bool:
     return password_hasher.verify(plain_password, hashed_password)
 
 
@@ -48,18 +48,6 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
         to_encode, config.JWT_SECRET_KEY, algorithm=config.JWT_ALGORITHM
     )
     return encoded_jwt
-
-
-def authenticate_user(email: str, password: str, session: SessionDep):
-    result = session.exec(select(User).filter(User.email == email))
-    user = result.first()
-    if (
-        not user
-        or user.role == RoleEnum.PENDING.value
-        or not verify_password(password, user.password)
-    ):
-        return False
-    return user
 
 
 def get_current_user(
