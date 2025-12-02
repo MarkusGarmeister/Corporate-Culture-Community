@@ -358,42 +358,18 @@ def set_password(
 
     user.password_reset_token = None
 
-    try:
-        session.add(user)
-        session.commit()
-        session.refresh(user)
-        logger.info(
-            f"Password reset completed for user {user.id}",
-            extra={
-                "event_type": "PASSWORD_RESET_COMPLETED",
-                "user_id": user.id,
-                "user_email": user.email,
-            },
-        )
-        return user
-
-    except SQLAlchemyError:
-        session.rollback()
-        logger.error(
-            f"Database error setting password for user {user.id}",
-            exc_info=True,
-            extra={"user_id": user.id},
-        )
-        raise HTTPException(
-            status_code=500, detail="Failed to update password. Please try again."
-        )
-
-    except Exception:
-        session.rollback()
-        logger.error(
-            f"Unexpected error setting password for user {user.id}",
-            exc_info=True,
-            extra={"user_id": user.id},
-        )
-        raise HTTPException(
-            status_code=500,
-            detail="An unexpected error occurred. Please try again later.",
-        )
+    user = DatabaseService.safe_commit(
+        session, user, operation="set password", entity_type="user"
+    )
+    logger.info(
+        f"Password reset completed for user {user.id}",
+        extra={
+            "event_type": "PASSWORD_RESET_COMPLETED",
+            "user_id": user.id,
+            "user_email": user.email,
+        },
+    )
+    return user
 
 
 @router.post("/update_password", response_model=UserReadDTO)
