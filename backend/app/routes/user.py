@@ -194,45 +194,9 @@ def update_user(
         hashed_password = get_password_hash(updated_user.password)
         db_user.password = hashed_password
 
-    try:
-        session.add(db_user)
-        session.commit()
-        session.refresh(db_user)
-        return db_user
-
-    except IntegrityError:
-        session.rollback()
-        logger.warning(
-            f"Database integrity error updating user {user_id}",
-            exc_info=True,
-            extra={"user_id": user_id},
-        )
-        raise HTTPException(
-            status_code=400, detail="Unable to update user due to data conflict."
-        )
-
-    except SQLAlchemyError:
-        session.rollback()
-        logger.error(
-            f"Database error updating user {user_id}",
-            exc_info=True,
-            extra={"user_id": user_id},
-        )
-        raise HTTPException(
-            status_code=500, detail="A database error occurred. Please try again later."
-        )
-
-    except Exception:
-        session.rollback()
-        logger.error(
-            f"Unexpected error updating user {user_id}",
-            exc_info=True,
-            extra={"user_id": user_id},
-        )
-        raise HTTPException(
-            status_code=500,
-            detail="An unexpected error occurred. Please try again later.",
-        )
+    db_user = DatabaseService.safe_commit(
+        session, db_user, operation="update", entity_type="user"
+    )
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
