@@ -27,6 +27,7 @@ from datetime import timedelta
 from app.config import Config
 from .__init__ import get_session
 from app.service import AsyncSMTPClient
+from app.service.database import DatabaseService
 from app.utils.limiter import limiter
 
 config = Config()
@@ -91,57 +92,9 @@ async def create_user(
             extra={"error_type": type(e).__name__},
         )
         raise HTTPException(status_code=400, detail="Invalid user data provided.")
-    try:
-        session.add(db_user)
-        session.commit()
-        session.refresh(db_user)
-        return db_user
-
-    except IntegrityError as e:
-        session.rollback()
-        logger.warning(
-            "Database integrity error during user creation",
-            exc_info=True,
-            extra={
-                "user_email": user.email,
-                "error_detail": str(e.orig) if hasattr(e, "orig") else str(e),
-            },
-        )
-
-        error_str = str(e).lower()
-        if "unique constraint" in error_str and "email" in error_str:
-            raise HTTPException(
-                status_code=400,
-                detail="An account with this email address already exists.",
-            )
-        else:
-            raise HTTPException(
-                status_code=400,
-                detail="Unable to create user account due to data conflict.",
-            )
-
-    except SQLAlchemyError:
-        session.rollback()
-        logger.error(
-            "Database error during user creation",
-            exc_info=True,
-            extra={"user_email": user.email, "error_type": type(e).__name__},
-        )
-        raise HTTPException(
-            status_code=500, detail="A database error occurred. Please try again later."
-        )
-
-    except Exception:
-        session.rollback()
-        logger.error(
-            "Unexpected error during user creation",
-            exc_info=True,
-            extra={"user_email": user.email, "error_type": type(e).__name__},
-        )
-        raise HTTPException(
-            status_code=500,
-            detail="An unexpected error occurred. Please try again later.",
-        )
+    db_user = DatabaseService.safe_commit(
+        session, db_user, operation="create", entity_type="user"
+    )
 
 
 @router.get("", response_model=List[UserReadDTO])
