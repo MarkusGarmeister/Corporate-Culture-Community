@@ -96,6 +96,8 @@ async def create_user(
         session, db_user, operation="create", entity_type="user"
     )
 
+    return db_user
+
 
 @router.get("", response_model=List[UserReadDTO])
 def list_users(
@@ -197,6 +199,8 @@ def update_user(
     db_user = DatabaseService.safe_commit(
         session, db_user, operation="update", entity_type="user"
     )
+
+    return db_user
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
