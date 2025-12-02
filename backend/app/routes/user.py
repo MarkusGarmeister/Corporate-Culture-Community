@@ -16,7 +16,6 @@ import secrets
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from app.auth import (
-    authenticate_user,
     create_access_token,
     get_current_user,
     get_password_hash,
@@ -337,7 +336,7 @@ def get_access_token(
         )
         raise HTTPException(status_code=403, detail="User account is not approved yet")
 
-    if not verify_password(user, login_data.password):
+    if not verify_password(login_data.password, user.password):
         logger.warning(
             f"Failed login attempt for user {user.id}",
             extra={"user_id": user.id, "user_email": user.email},
