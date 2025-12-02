@@ -72,9 +72,6 @@ def read_locations(
     max_price_range: Optional[int] = Query(None),
     session: Session = Depends(get_session),
 ):
-    if city:
-        city = sanitize_text(city, field_name="city", max_length=50)
-
     query = select(Location).options(selectinload(Location.labels))
     query = apply_location_filters(query, status, city, min_capacity, max_price_range)
 
