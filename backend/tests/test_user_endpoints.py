@@ -122,9 +122,7 @@ class TestUpdateUser:
         db_user = session.get(User, test_user.id)
         assert db_user.first_name == "Updated"
 
-    def test_update_user_not_found_as_admin(
-        self, session: Session, admin_user: User
-    ):
+    def test_update_user_not_found_as_admin(self, session: Session, admin_user: User):
         """Test admin updating nonexistent user raises 404"""
         update_data = UserUpdateDTO(first_name="Test")
 
@@ -155,9 +153,7 @@ class TestUpdateUser:
 
         assert exc_info.value.status_code == 403
 
-    def test_update_user_role_requires_admin(
-        self, session: Session, test_user: User
-    ):
+    def test_update_user_role_requires_admin(self, session: Session, test_user: User):
         """Test changing role requires admin permissions"""
         update_data = UserUpdateDTO(role=RoleEnum.ADMIN.value)
 
@@ -208,9 +204,7 @@ class TestDeleteUser:
         deleted_user = session.get(User, user_id)
         assert deleted_user is None
 
-    def test_delete_user_not_found_as_admin(
-        self, session: Session, admin_user: User
-    ):
+    def test_delete_user_not_found_as_admin(self, session: Session, admin_user: User):
         """Test admin deleting nonexistent user raises 404"""
         with pytest.raises(HTTPException) as exc_info:
             delete_user(
@@ -350,9 +344,7 @@ class TestApproveUser:
             assert db_user.role == RoleEnum.USER.value
 
     @pytest.mark.asyncio
-    async def test_approve_user_not_found(
-        self, session: Session, admin_user: User
-    ):
+    async def test_approve_user_not_found(self, session: Session, admin_user: User):
         """Test approving nonexistent user raises 404"""
         with pytest.raises(HTTPException) as exc_info:
             await approve_user(
