@@ -166,7 +166,10 @@ class TestUpdateUser:
             )
 
         assert exc_info.value.status_code == 403
-        assert "permission to change user roles" in exc_info.value.detail
+        assert (
+            "You don't have permission to access this resource."
+            in exc_info.value.detail
+        )
 
     def test_update_user_role_as_admin(
         self, session: Session, test_user: User, admin_user: User
@@ -369,4 +372,7 @@ class TestApproveUser:
             )
 
         assert exc_info.value.status_code == 403
-        assert "Only admin users can approve" in exc_info.value.detail
+        assert (
+            "You don't have permission to access this resource."
+            in exc_info.value.detail
+        )
