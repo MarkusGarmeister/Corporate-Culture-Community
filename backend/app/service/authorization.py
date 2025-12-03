@@ -22,3 +22,26 @@ class AuthorizationService:
                 status_code=403,
                 detail="You don't have permission to access this resource.",
             )
+
+    @staticmethod
+    def can_modify_user(current_user: User, target_user_id: int) -> bool:
+        return current_user.id == target_user_id or AuthorizationService.is_admin(
+            current_user
+        )
+
+    @staticmethod
+    def require_modify_user(
+        current_user: User, target_user_id: int, operation: str
+    ) -> None:
+        if not AuthorizationService.can_modify_user(current_user, target_user_id):
+            logger.warning(
+                f"User {current_user.id} attempted to {operation} user {target_user_id} without permission",
+                extra={
+                    "current_user_id": current_user.id,
+                    "target_user_id": target_user_id,
+                },
+            )
+            raise HTTPException(
+                status_code=403,
+                detail=f"You don't have permission to {operation} this user.",
+            )
