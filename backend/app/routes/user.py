@@ -19,7 +19,6 @@ from app.auth import (
     get_current_user,
     get_password_hash,
     generate_random_password,
-    is_admin_user,
     verify_password,
 )
 from datetime import timedelta

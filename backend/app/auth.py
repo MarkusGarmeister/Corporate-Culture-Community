@@ -86,7 +86,3 @@ def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token",
         )
-
-
-def is_admin_user(user: User) -> bool:
-    return user.role == RoleEnum.ADMIN.value
