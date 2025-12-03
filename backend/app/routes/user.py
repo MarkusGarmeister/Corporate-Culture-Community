@@ -13,7 +13,6 @@ from app.routes.dto.user import (
 )
 import logging
 import secrets
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from app.auth import (
     create_access_token,
@@ -28,6 +27,7 @@ from app.config import Config
 from .__init__ import get_session
 from app.service import AsyncSMTPClient
 from app.service.database import DatabaseService
+from app.service.authorization import AuthorizationService
 from app.utils.limiter import limiter
 
 config = Config()
@@ -106,11 +106,8 @@ def list_users(
     current_user: User = Depends(get_current_user),
     pending: Optional[bool] = Query(None),
 ):
-    if current_user.role != RoleEnum.ADMIN.value:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You don't have permission to access this resource.",
-        )
+    AuthorizationService.require_admin(current_user)
+
     if pending is not None and pending:
         users_pending = session.exec(
             select(User).where(User.role == RoleEnum.PENDING.value)
@@ -171,15 +168,7 @@ def update_user(
     if updated_user.department is not None:
         db_user.department = updated_user.department
     if updated_user.role is not None:
-        if not is_admin_user(current_user):
-            logger.warning(
-                f"User {current_user.id} attempted to change role of user {user_id} without permission",
-                extra={"current_user_id": current_user.id, "target_user_id": user_id},
-            )
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You don't have permission to change user roles.",
-            )
+        AuthorizationService.require_admin(current_user)
         old_role = db_user.role
         db_user.role = updated_user.role
         logger.warning(
@@ -284,11 +273,8 @@ async def approve_user(
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
-    if not is_admin_user(current_user):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only admin users can approve accounts",
-        )
+    AuthorizationService.require_admin(current_user)
+
     db_user = session.get(User, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
