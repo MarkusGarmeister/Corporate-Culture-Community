@@ -139,15 +139,7 @@ def update_user(
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.id != user_id and current_user.role != RoleEnum.ADMIN.value:
-        logger.warning(
-            f"User {current_user.id} attempted to update user {user_id} without permission",
-            extra={"current_user_id": current_user.id, "target_user_id": user_id},
-        )
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You don't have permission to update this user.",
-        )
+    AuthorizationService.require_modify_user(current_user, user_id, "update")
     db_user = session.get(User, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -197,15 +189,7 @@ def delete_user(
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.id != user_id and current_user.role != RoleEnum.ADMIN.value:
-        logger.warning(
-            f"User {current_user.id} attempted to delete user {user_id} without permission",
-            extra={"current_user_id": current_user.id, "target_user_id": user_id},
-        )
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You don't have permission to delete this user.",
-        )
+    AuthorizationService.require_modify_user(current_user, user_id, "delete")
     user = session.get(User, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
