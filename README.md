@@ -128,6 +128,38 @@ npm run dev
 
 See [THREAT_MODEL_SIMPLE.md](./THREAT_MODEL_SIMPLE.md) for detailed STRIDE threat analysis.
 
+## ✨ Clean Code
+
+**Bad Smells**
+
+- repeated code
+- functions too long or too many arguments
+- naming of functions or variables is unclear
+- code which is not used (also commented)
+- comments either not necessary or being used as deodorant
+
+**Principals**
+
+- DRY: Do Not Repeat Yourself
+- SRP: Single Responsibility
+- Good Naming
+- Clear Interface
+- Modularity: Cohesion/Coupling
+- Encapsulation: hiding implementation
+
+**Tools**
+
+- **Backend**:
+
+  - Pylint
+  - Black
+  - Pytest
+
+- **Frontend**:
+  - ESLint
+  - Prettier
+  - Vitest
+
 ---
 
 ## 📄 License
